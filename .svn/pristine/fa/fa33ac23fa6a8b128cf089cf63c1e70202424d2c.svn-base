@@ -1,0 +1,53 @@
+import show from '../pages/showComponents/showComponents'
+import mine from '../pages/mine/mine'
+import classHistory from '../components/classHistory/classHistory'
+import mineStudy from '../components/mineStudy/mineStudy'
+import college from '../pages/college/college';
+import newsList from '../pages/newsList/newsList';
+import show from '../pages/showComponents/showComponents';
+import mine from '../pages/mine/mine';
+
+export default {
+	routes: [
+		{
+			path: '/show',
+			component: show
+		},
+		{
+			name: 'college',
+			path: '/college',
+			component: college,
+		},
+		{
+			name: 'newsList',
+			path: '/newsList',
+			component: newsList
+		},
+		{
+			path: '/mine',
+			component: mine,
+			children: [
+				{
+					name: 'mine',
+					path: '/mine',
+					component: mineStudy
+				},
+				{
+					path: '/mineStudy',
+					name: 'mainStudy',
+					component: classHistory					
+				},
+				{
+					name: 'accumulatePoints',
+					path: '/accumulatePoints',
+					component: classHistory
+				},
+				{
+					name: 'collection',
+					path: '/collection',
+					component: classHistory
+				}
+			]
+		}
+	]
+}

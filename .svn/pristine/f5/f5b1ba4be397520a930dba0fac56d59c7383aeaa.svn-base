@@ -1,0 +1,48 @@
+<template>
+  <div>
+    <h1 class="main-mine-title">视频</h1>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <mineVideo :msg="msg"></mineVideo>
+    <el-pagination class="pagination" layout="prev, pager, next" hide-on-single-page :page-size=12 :total="100"></el-pagination>
+  </div>
+</template>
+
+<script>
+import mineVideo from "../../components/card/mineVideoCard";
+export default {
+  data() {
+    return {
+      msg: {
+        title: "电焊基础手焊基础手法指法指法指法指导",
+        nums: 550,
+        times: 3,
+        date: "2019-11-11",
+        src: require("../../../src/assets/img/class2.png")
+      },
+      valueText: 3,
+      valueCustomText: 3.8
+    };
+  },
+  components: {
+    mineVideo
+  }
+};
+</script>
+ 
+<style lang="scss">
+.main-mine {
+  border: 0 &-title {
+    color: #333;
+  }
+}
+</style>

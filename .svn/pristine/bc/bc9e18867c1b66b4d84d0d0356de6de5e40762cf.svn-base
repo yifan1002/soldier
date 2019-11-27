@@ -1,0 +1,32 @@
+<template>
+  <div>
+    <el-tabs v-model="activeName" class="mytab">
+      <el-tab-pane label="视频课" name="first"><classVideo></classVideo></el-tab-pane>
+      <el-tab-pane label="资讯课" name="second">
+        <div><a href="javascript:;" class="info-class"><span class="info-class-title">坚持和完善我国新型政党制度</span><span class="info-class-time">2019-11-08</span></a></div>
+        <div><a href="javascript:;" class="info-class"><span class="info-class-title">坚定中国特色制度自信 构筑民族复兴根本保障 “中国之治”展现制度自信</span><span class="info-class-time">2019-11-08</span></a></div>
+        <div><a href="javascript:;" class="info-class"><span class="info-class-title">坚持和完善我国新型政党制度  讲清讲透“中国之治”背后的制</span><span class="info-class-time">2019-11-08</span></a></div>
+      </el-tab-pane>
+      <el-tab-pane label="线下课" name="third">线下课线下课线下课线下课线下课线下课线下课线下课线下课</el-tab-pane>
+    </el-tabs>
+  </div>
+</template>
+
+<script>
+import classVideo from "../../components/classVideo/classVideo";
+export default {
+  name: "classHistory",
+  data() {
+    return {
+      activeName: "first"
+    };
+  },
+  components:{
+    classVideo
+  }
+};
+</script>
+
+<style lang="scss" scoped>
+
+</style>

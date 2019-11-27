@@ -1,0 +1,7 @@
+import login from './login';
+import news from './news';
+
+export default {
+	login,
+	news
+}

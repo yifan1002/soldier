@@ -1,0 +1,35 @@
+import show from '../pages/showComponents/showComponents'
+import mine from '../pages/mine/mine'
+import mainInfo from '../components/mainInfo/mainInfo'
+import MainVideoClass from '../components/mainVideoClass/mainVideoClass'
+
+export default {
+	routes: [
+		{
+			path: '/show',
+			component: show
+		},
+		{
+			path: '/mine',
+			component: mine,
+			children: [
+				{
+					path: '/mine',
+					component: mainInfo
+				},
+				{
+					path: '/mainStudy',
+					component: MainVideoClass
+				},
+				{
+					path: '/accumulatePoints',
+					component: mainInfo
+				},
+				{
+					path: '/collection',
+					component: mainInfo
+				}
+			]
+		}
+	]
+}

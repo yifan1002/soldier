@@ -1,0 +1,74 @@
+<template>
+  <div>
+    <div class="mine-study">
+      <img class="mine-study-img" src="../../../src/assets/img/text.png" alt />
+      <p class="mine-study-title">阅读文章</p>
+      <p class="mine-study-info">
+        每有效阅读一篇
+        <span>+1分</span>
+      </p>
+      <div class="mine-study-progress">
+        <p>{{progress}}分/6分</p>
+        <div :style="{width:120*(progress/6)+'px'}" class="mine-study-success"></div>
+      </div>
+      <el-Button type="primary" ghost style="width:90px;height:32px;margin-top:10px;line-height:0;">去学习</el-Button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      progress: 3
+    };
+  }
+};
+</script>
+<style lang="scss" scoped>
+@import "../../var.scss";
+.mine-study {
+  box-sizing: border-box;
+  width: 220px;
+  height: 300px;
+  border: 1px solid #e4e4e4;
+  text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  &-title {
+    font-size: 16px;
+    line-height: 24px;
+    color: #000;
+    margin: 5px 0;
+  }
+  &-info {
+    font-size: 14px;
+    color: $c-light;
+    span {
+      color: $c-success;
+    }
+  }
+  &-progress {
+    margin: 25px auto 10px;
+    width: 120px;
+    height: 20px;
+    background: #dbdbdb;
+    border-radius: 10px;
+    position: relative;
+    p {
+      position: absolute;
+      top: -16px;
+      left: 32px;
+      z-index: 999;
+      color: #fff;
+    }
+  }
+  &-success {
+    position: absolute;
+    top: 0;
+    height: 20px;
+    border-radius: 10px;
+    background: $c-success;
+  }
+}
+</style>

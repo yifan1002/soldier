@@ -1,0 +1,75 @@
+<template>
+  <div class="mine-video">
+    <div class="mine-video-img">
+      <img :src="msg.src" alt />
+    </div>
+    <div class="mine-video-title">
+      <a href="javascript:;" v-text="msg.title"></a>
+    </div>
+    <div class="mine-video-footer">
+      <i class="times"></i>
+      <span v-text="msg.times"></span>
+      <span class="mine-video-footer-right">观看与{{msg.date}}</span>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  props: ["msg"]
+};
+</script>
+
+<style lang="scss" scoped>
+@import  '../../var.scss';
+.mine-video {
+  box-sizing: border-box;
+  display: inline-block;
+  width: 218px;
+  height: 193px;
+  cursor: pointer;
+  margin: 0 20px 20px 0;
+  &:hover {
+    box-shadow: #e4e4e4 0px 0px 6px;
+     a {
+        color: $c-primary;
+      }
+  }
+  &-img {
+     height: 118px;
+    img {
+      width: 218px;
+      height: 118px;
+      position: relative;
+      left: -1px;
+      top: -1px;
+    }
+  }
+  &-title {
+    margin: 10px 20px 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    a {
+      font-size: 16px;
+      line-height: 24px;
+      color: $c-darken;
+      text-decoration: none;
+     
+    }
+  }
+  &-footer {
+    font-size: 14px;
+    line-height: 32px;
+    color: $c-light;
+    margin: 0 0 0 5px;
+    height: 32px;
+    span {
+      margin-right: 18px;
+    }
+    &-right{
+        float: right;
+    }
+  }
+}
+</style>

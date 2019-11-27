@@ -1,0 +1,36 @@
+<template>
+  <div>
+    <el-tabs v-model="activeName" class="mytab">
+      <el-tab-pane label="文章" name="first">
+        <div><a href="javascript:;" class="info-class"><span class="info-class-title">坚持和完善我国新型政党制度</span><span class="info-class-time">2019-11-08</span></a></div>
+        <div><a href="javascript:;" class="info-class"><span class="info-class-title">坚持和完善我国新型政党制度</span><span class="info-class-time">2019-11-08</span></a></div>
+        <div><a href="javascript:;" class="info-class"><span class="info-class-title">坚持和完善我国新型政党制度</span><span class="info-class-time">2019-11-08</span></a></div>
+        <div><a href="javascript:;" class="info-class"><span class="info-class-title">坚持和完善我国新型政党制度</span><span class="info-class-time">2019-11-08</span></a></div>
+      </el-tab-pane>
+      <el-tab-pane label="视频课" name="second">
+        <classVideo class="collection"></classVideo>
+      </el-tab-pane>
+    </el-tabs>
+  </div>
+</template>
+
+<script>
+import classVideo from "../../components/classVideo/classVideo";
+export default {
+  name:"collection",
+  data(){
+    return {
+      activeName:"first"
+    }
+  },
+  components:{
+    classVideo
+  }
+};
+</script>
+
+<style>
+.collection .mine-video-footer-right{
+  display: none;
+}
+</style>
