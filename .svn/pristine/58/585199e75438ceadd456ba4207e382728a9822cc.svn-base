@@ -1,4 +1,0 @@
-const base = {
-	url: 'http://dev.exstudy.com',
-}
-export default base;
