@@ -2,9 +2,18 @@
  * axios封装
  * 请求拦截、响应拦截、错误统一处理
  */
+import Vue from 'vue';
+import VueRouter from 'vue-router';
+import Vuex from 'vuex';
 import axios from 'axios';
-import router from '@/router';
-import store from '@/store';
+import Routes from '@/router';
+import Store from '@/store';
+
+Vue.use(VueRouter);
+const router = new VueRouter(Routes);
+Vue.use(Vuex);
+const store = new Vuex.Store(Store);
+
 import {
 	Message
 } from 'element-ui';
@@ -25,15 +34,12 @@ const tip = msg => {
  * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
  */
 const toLogin = () => {
-	console.log(router);
-	// window.location.href = 'http://192.168.11.73:8080/#/login';
 	router.replace({
 		path: '/login',
 		query: {
 			redirect: router.currentRoute.fullPath
 		}
 	});
-	store.commit('loginSuccess', null);
 }
 
 /** 
@@ -53,27 +59,27 @@ const errorHandle = (status, other) => {
 				toLogin();
 			}, 1000);
 			break;
-			// 5002 用户不存在或账号密码错误
+		// 5002 用户不存在或账号密码错误
 		case 5002:
 			tip('用户不存在或账号密码错误');
 			setTimeout(() => {
 				toLogin();
 			}, 1000);
 			break;
-			// 404请求不存在
+		// 404请求不存在
 		case 404:
 			tip('请求的资源不存在');
 			setTimeout(() => {
 				alert('此处跳转到404页面');
 			}, 1000);
 			break;
-			// 500服务器错误
+		// 500服务器错误
 		case 500:
-			tip('服务器错误');
-			setTimeout(() => {
-				alert('此处跳转到500错误页面');
-			}, 1000);
-			break;
+				tip('服务器错误');
+				setTimeout(() => {
+					alert('此处跳转到500错误页面');
+				}, 1000);
+				break;
 		default:
 			console.log(other);
 	}
@@ -117,7 +123,7 @@ instance.interceptors.response.use(
 				store.commit('changeToken', token);
 			}
 			return Promise.resolve(res);
-		} else {
+		} else{
 			errorHandle(res.data.code, res.data.msg);
 			// console.log('2-请求失败');
 			return Promise.reject(res);
