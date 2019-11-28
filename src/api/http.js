@@ -26,14 +26,13 @@ const tip = msg => {
  */
 const toLogin = () => {
 	console.log(router);
-	// window.location.href = 'http://192.168.11.73:8080/#/login';
 	router.replace({
 		path: '/login',
 		query: {
 			redirect: router.currentRoute.fullPath
 		}
 	});
-	store.commit('loginSuccess', null);
+	store.commit('loginSuccess', false);
 }
 
 /** 
@@ -48,7 +47,7 @@ const errorHandle = (status, other) => {
 		case 5001:
 			tip('用户未授权或授权过期');
 			localStorage.removeItem('token');
-			store.commit('loginSuccess', null);
+			store.commit('loginSuccess', false);
 			setTimeout(() => {
 				toLogin();
 			}, 1000);
@@ -110,8 +109,8 @@ instance.interceptors.response.use(
 		if (res.data.code === 200) {
 			// console.log('1-请求成功');
 			// 如果有返回新token，刷新vuex和localStorage的token
-			if (res.headers.expiredtoken) {
-				const token = `Bearer ${res.headers.date}`;
+			if (res.headers.token) {
+				const token = `Bearer ${res.headers.token}`;
 				console.log(token);
 				localStorage.setItem('token', token);
 				store.commit('changeToken', token);
@@ -122,7 +121,6 @@ instance.interceptors.response.use(
 			// console.log('2-请求失败');
 			return Promise.reject(res);
 		}
-		// res.status === 200 ? Promise.resolve(res) : Promise.reject(res)
 	},
 	// 请求失败
 	error => {
@@ -131,8 +129,8 @@ instance.interceptors.response.use(
 		} = error;
 		if (response) {
 			// 请求已发出，但是不在2xx的范围 
-			errorHandle(response.status, response.data.msg);
-			console.log('2-请求失败');
+			// console.log('2-请求失败');
+			errorHandle(response.status, response.statusText);
 			return Promise.reject(response);
 		} else {
 			// 处理断网的情况

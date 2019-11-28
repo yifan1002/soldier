@@ -1,25 +1,40 @@
 <template>
   <div>
-    <h3 class="mine-title">我的积分</h3>
-    <div class="mine-top">
-      <div class="mine-mark">
-        <p>
-          <span class="mine-mark-num">成长总积分:</span>
-          <span class="mine-mark-word">89</span>
-        </p>
+    <div class="clearfix">
+      <h3 class="mine-title">我的积分</h3>
+      <div class="mine-top">
+        <div class="mine-mark">
+          <p>
+            <span class="mine-mark-num">成长总积分:</span>
+            <span class="mine-mark-word">89</span>
+          </p>
+        </div>
+        <div class="mine-mark">
+          <p>
+            <span class="mine-mark-num">今日累计分:</span>
+            <span class="mine-mark-word">9</span>
+          </p>
+        </div>
       </div>
-      <div class="mine-mark">
-        <p>
-          <span class="mine-mark-num">今日累计分:</span>
-          <span class="mine-mark-word">9</span>
-        </p>
-      </div>
+    </div>
+    <div>
+      <buttonGroup></buttonGroup>
+    </div>
+    <div>
+      <tableA></tableA>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+import buttonGroup from "../../components/buttonGroup/buttonGroup";
+import tableA from "../../components/table/table";
+export default {
+  components: {
+    buttonGroup,
+    tableA
+  }
+};
 </script>
 
 <style scoped lang="scss">
@@ -36,7 +51,7 @@ export default {};
     border-left: 0;
   }
   p {
-      box-sizing: border-box;
+    box-sizing: border-box;
     width: 210px;
     border-right: 1px solid #999;
   }

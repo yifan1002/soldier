@@ -1,60 +1,52 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import classHistory from '../components/classHistory/classHistory'
-import collection from '../components/collection/collection'
-import mineStudy from '../components/mineStudy/mineStudy'
-import accumulate from '../components/accumulate/accumulate'
-import college from '../pages/college/college';
-import newsList from '../pages/newsList/newsList';
-import show from '../pages/showComponents/showComponents';
-import mine from '../pages/mine/mine';
-import login from '../pages/login/login';
+import college from '@p/college/college';
 
 const routes = {
 	routes: [
 		{
 			path: '/show',
-			component: show
+			component: r => require.ensure([], () => r(require('@p/showComponents/showComponents')), 'show')
 		},
 		{
 			name: 'login',
 			path: '/login',
-			component: login,
+			component: r => require.ensure([], () => r(require('@p/login/login')), 'login')
 		},
 		{
 			name: 'college',
 			path: '/college',
-			component: college,
+			component: college
 		},
 		{
 			name: 'newsList',
 			path: '/newsList',
-			component: newsList
+			component: r => require.ensure([], () => r(require('@p/newsList/newsList')), 'newsList')
 		},
 		{
 			path: '/mine',
-			component: mine,
+			component: r => require.ensure([], () => r(require('@p/mine/mine')), 'mine'),
 			children: [
 				{
 					name: 'mine',
 					path: '/mine',
-					component: mineStudy
+					component: r => require.ensure([], () => r(require('@c/mineStudy/mineStudy')), 'mineStudy')
 				},
 				{
 					path: '/mineStudy',
 					name: 'mainStudy',
-					component: classHistory					
+					component: r => require.ensure([], () => r(require('@c/classHistory/classHistory')), 'classHistory')
 				},
 				{
 					name: 'collection',
 					path: '/collection',
-					component: collection
+					component: r => require.ensure([], () => r(require('@c/collection/collection')), 'collection')
 				},
 				{
 					name: 'accumulatePoints',
 					path: '/accumulatePoints',
-					component: accumulate
+					component: r => require.ensure([], () => r(require('@c/accumulate/accumulate')), 'accumulate')
 				}
 			]
 		}

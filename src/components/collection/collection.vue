@@ -3,27 +3,9 @@
     <el-tabs v-model="activeName" class="mytab">
       <el-tab-pane label="文章" name="first">
         <div>
-          <a href="javascript:;" class="info-class">
-            <span class="info-class-title">坚持和完善我国新型政党制度</span>
-            <span class="info-class-time">2019-11-08</span>
-          </a>
-        </div>
-        <div>
-          <a href="javascript:;" class="info-class">
-            <span class="info-class-title">坚持和完善我国新型政党制度</span>
-            <span class="info-class-time">2019-11-08</span>
-          </a>
-        </div>
-        <div>
-          <a href="javascript:;" class="info-class">
-            <span class="info-class-title">坚持和完善我国新型政党制度</span>
-            <span class="info-class-time">2019-11-08</span>
-          </a>
-        </div>
-        <div>
-          <a href="javascript:;" class="info-class">
-            <span class="info-class-title">坚持和完善我国新型政党制度</span>
-            <span class="info-class-time">2019-11-08</span>
+          <a v-for="item in articleList" :key="item.id" href="javascript:;" class="info-class">
+            <span class="info-class-title" v-text="item.objectName"></span>
+            <span class="info-class-time"> {{item.createTime|formatTime}}</span>
           </a>
         </div>
       </el-tab-pane>
@@ -40,7 +22,8 @@ export default {
   name: "collection",
   data() {
     return {
-      activeName: "first"
+      activeName: "first",
+      articleList: []
     };
   },
   components: {
@@ -48,9 +31,7 @@ export default {
   },
   methods: {
     getLocalTime(nS) {
-      return new Date(parseInt(nS))
-        .toLocaleString()
-        .replace(/:\d{1,2}$/, " ");
+      return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/, " ");
     }
   },
   created() {
@@ -61,8 +42,7 @@ export default {
         pageNum: 10
       })
       .then(res => {
-        console.log(res);
-        res.data.list[0].createTime=this.getLocalTime(res.data.list[0].createTime)
+        this.articleList = res.data.data.list;
       })
       .catch(err => {
         console.log(err);
@@ -74,7 +54,7 @@ export default {
         pageNum: 10
       })
       .then(res => {
-        console.log(res);
+        console.log(res, 123);
       })
       .catch(err => {
         console.log(err);

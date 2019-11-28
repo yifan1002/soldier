@@ -3,7 +3,7 @@
     <ul @click="changeValue">
       <li v-for="(item,index) in listItem" :key="index">
         <router-link
-          :to='item.path'
+          :to="item.path"
           :class="pagetype==item.path?'actived':true"
           href="javascript:;"
           :data-i="item.path"
@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations } from "vuex";
 export default {
   data() {
     return {
@@ -33,11 +33,16 @@ export default {
         this.pagetype = e.target.dataset.i;
       }
     },
-		...mapMutations(['changeMenu', 'changeSubMenu'])
+    ...mapMutations(["changeMenu", "changeSubMenu"])
   },
-  created(){
-    this.pagetype=this.$route.path.slice(1);
-		this.changeMenu('interspace');
+  created() {
+    this.pagetype = this.$route.path.slice(1);
+    this.changeMenu("interspace");
+  },
+  watch: {
+    "$route.path": function(newVal) {
+        this.pagetype=newVal.slice(1)
+    }
   }
 };
 </script>

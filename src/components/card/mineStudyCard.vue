@@ -41,7 +41,7 @@ export default {
 }
 .mine-study {
   box-sizing: border-box;
-  width: 217px;
+  width: 216px;
   height: 300px;
   border: 1px solid #e4e4e4;
   text-align: center;
