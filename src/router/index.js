@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-import college from '@p/college/college';
+// import college from '@p/college/college';
 
 const routes = {
 	routes: [
@@ -17,12 +17,18 @@ const routes = {
 		{
 			name: 'college',
 			path: '/college',
-			component: college
+			component: r => require.ensure([], () => r(require('@p/college/college')), 'college')
+			
 		},
 		{
-			name: 'newsList',
-			path: '/newsList',
-			component: r => require.ensure([], () => r(require('@p/newsList/newsList')), 'newsList')
+			name: 'articleList',
+			path: '/articleList',
+			component: r => require.ensure([], () => r(require('@p/articleList/articleList')), 'articleList')
+		},
+		{
+			name: 'articleDetail',
+			path: '/articleDetail',
+			component: r => require.ensure([], () => r(require('@p/articleDetail/articleDetail')), 'articleDetail')
 		},
 		{
 			path: '/mine',

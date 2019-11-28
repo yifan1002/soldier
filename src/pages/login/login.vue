@@ -52,6 +52,7 @@
 							path: '/mine'
 						});
 						// 登录成功,存储token
+						console.log(res.data.data.token)
 						const token = `Bearer ${res.data.data.token}`;
 						localStorage.setItem('token', token);
 						this.changeToken(token); // 使用mapMutations简化代码

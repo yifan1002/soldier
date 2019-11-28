@@ -4,10 +4,10 @@ import App from '@/App';
 import router from '@/router';
 import store from "@/store";
 import api from '@/api';
-import '@/plugins/element.js'
+import '@/plugins/element.js';
 
 // 引入全局过滤器
-import * as filters from '@u/filters'
+import * as filters from '@u/filters';
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 });

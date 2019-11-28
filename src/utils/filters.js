@@ -1,8 +1,8 @@
-const formatDate = function(time) {
-	var re = /-?\d+/;
-	var m = re.exec(time);
-	var d = new Date(parseInt(m[0]));
-	var o = {
+const formatDate = function(time, format = 'yyyy-MM-dd hh:mm:ss') {
+	let re = /-?\d+/;
+	let m = re.exec(time);
+	let d = new Date(parseInt(m[0]));
+	let o = {
 		'M+': d.getMonth() + 1, //month
 		'd+': d.getDate(), //day
 		'h+': d.getHours(), //hour
@@ -11,11 +11,10 @@ const formatDate = function(time) {
 		'q+': Math.floor((d.getMonth() + 3) / 3), //quarter
 		'S': d.getMilliseconds() //millisecond
 	}
-	var format = 'yyyy-MM-dd hh:mm:ss';
 	if (/(y+)/.test(format)) {
 		format = format.replace(RegExp.$1, (d.getFullYear() + '').substr(4 - RegExp.$1.length));
 	}
-	for (var k in o) {
+	for (let k in o) {
 		if (new RegExp('(' + k + ')').test(format)) {
 			format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ('00' + o[k]).substr(('' + o[k]).length));
 		}

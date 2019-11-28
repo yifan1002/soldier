@@ -1,15 +1,15 @@
 <template>
   <div class="mine-video" :class="size">
     <div class="mine-video-img">
-      <img :src="msg.src" alt />
+      <img src="../../../src/assets/img/class2.png" alt />
     </div>
     <div class="mine-video-title">
-      <a href="javascript:;" v-text="msg.title"></a>
+      <a href="javascript:;">{{vodList.vod.intro}}</a>
     </div>
     <div class="mine-video-footer">
       <i class="times"></i>
-      <span v-text="msg.times"></span>
-      <span class="mine-video-footer-right">观看于{{msg.date}}</span>
+      <span v-text="vodList.vod.viewNum"></span>
+      <span class="mine-video-footer-right">观看于{{vodList.createTime|formatDate('yyyy-MM-dd')}}</span>
     </div>
   </div>
 </template>
@@ -17,12 +17,17 @@
 <script>
 export default {
   props: {
-    msg: {
-      type: Object
+    vodList: {
+      type: Object,      
     },
     size: {
       type: String,
       default: ""
+    }
+  },
+  mounted(){
+    if(!this.vodList.vod.intro){
+      this.vodList.vod.intro="名称为空"
     }
   }
 };
@@ -37,7 +42,7 @@ export default {
   width: 217px;
   height: 193px;
   cursor: pointer;
-  margin: 0 20px 20px 0;
+  margin: 0 0 20px 0;
 
   &:hover {
     box-shadow: #e4e4e4 0px 0px 6px;

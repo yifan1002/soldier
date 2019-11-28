@@ -3,36 +3,44 @@
     <el-tabs v-model="activeName" class="mytab">
       <el-tab-pane label="文章" name="first">
         <div>
-          <a v-for="item in articleList" :key="item.id" href="javascript:;" class="info-class">
-            <span class="info-class-title" v-text="item.objectName"></span>
-            <span class="info-class-time"> {{item.createTime|formatTime}}</span>
-          </a>
+          <router-link 
+            v-for="item in articleList"
+            :key="item.id"
+            :to="{path:'articleDetail',query:{id:item.id}}"
+            class="info-class"
+            style="display:block;"
+          >
+            <span class="info-class-time">{{item.createTime|formatDate('YYYY-MM-DD')}}</span>
+            {{item.objectName}}
+          </router-link>
         </div>
       </el-tab-pane>
       <el-tab-pane label="视频课" name="second">
-        <classVideo class="collection"></classVideo>
+        <mineVideoCard
+          v-for="(item,index) in vodList"
+          :key="item.id"
+          class="collection"
+          :vodList="item"
+          :class="(index+1)%4==0?'m-r-0':'m-r-20'"
+        ></mineVideoCard>
       </el-tab-pane>
     </el-tabs>
   </div>
 </template>
 
 <script>
-import classVideo from "../../components/classVideo/classVideo";
+import mineVideoCard from "../../components/card/mineVideoCard";
 export default {
   name: "collection",
   data() {
     return {
       activeName: "first",
-      articleList: []
+      articleList: [],
+      vodList: []
     };
   },
   components: {
-    classVideo
-  },
-  methods: {
-    getLocalTime(nS) {
-      return new Date(parseInt(nS)).toLocaleString().replace(/:\d{1,2}$/, " ");
-    }
+    mineVideoCard
   },
   created() {
     this.$api.collect
@@ -54,7 +62,7 @@ export default {
         pageNum: 10
       })
       .then(res => {
-        console.log(res, 123);
+        this.vodList = res.data.data.list;
       })
       .catch(err => {
         console.log(err);

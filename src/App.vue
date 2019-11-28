@@ -96,6 +96,12 @@ body,html{
     }
   }
 }
+.m-r-0{
+  margin-right:0; 
+}
+.m-r-20{
+  margin-right:20px!important; 
+}
 .icon-home {
   width: 20px;
   height: 16px;

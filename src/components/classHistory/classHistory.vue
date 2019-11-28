@@ -2,7 +2,7 @@
   <div>
     <el-tabs v-model="activeName" class="mytab">
       <el-tab-pane label="视频课" name="first">
-        <classVideo></classVideo>
+        <mineVideoCard v-for="item in vodList" :vodList="item" :key="item.id"></mineVideoCard>
       </el-tab-pane>
       <el-tab-pane label="资讯课" name="second">
         <div>
@@ -35,19 +35,34 @@
 </template>
 
 <script>
-import classVideo from "../../components/classVideo/classVideo";
+import mineVideoCard from "../../components/card/mineVideoCard";
 import classOffline from "../../components/classOffline/classOffline";
 export default {
   name: "classHistory",
   data() {
     return {
-      activeName: "first"
+      activeName: "first",
+      vodList:[]
     };
   },
   components: {
-    classVideo,
+    mineVideoCard,
     classOffline
+  },
+  created(){
+    this.$api.vod
+      .vodList({
+        currentPage: 1,
+        pageNum: 10
+      })
+      .then(res => {
+        this.vodList = res.data.data.list;
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
+
 
 };
 </script>
