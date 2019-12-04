@@ -27,7 +27,7 @@ const routes = {
 		},
 		{
 			name: 'articleDetail',
-			path: '/articleDetail',
+			path: '/articleDetail/:id',
 			component: r => require.ensure([], () => r(require('@p/articleDetail/articleDetail')), 'articleDetail')
 		},
 		{

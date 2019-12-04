@@ -2,31 +2,39 @@
   <div class="card">
     <div class="card-msg">
       <h1 class="card-title">
-        <i v-if="isTimeout" class="badge bg-gray">已过期</i><i v-else class="badge">火热报名</i>浙江省杭州退役军人事务局线下课程名称
+        <i v-if="isTimeout" class="badge bg-gray">已过期</i>
+        <i v-else class="badge">火热报名</i>
+        {{lessonList.lessonName}}
       </h1>
-      <p>来自全国十一所名校的特级金牌竞赛老师，集中进中进中进中进行数学竞赛辅导培训集</p>
-      <span>
-        <i class="date subject"></i>专业分类名
+      <p>{{lessonList.intro}}</p>
+      <span class="major-mame">
+        <i class="date subject"></i>
+        {{lessonList.majorName}}
       </span>
       <span>
-        <i class="date datetime"></i>10月10日~10月30日
+        <i class="date datetime"></i>
+        {{lessonList.beginTime|formatDate('MM月dd日')}}~{{lessonList.endTime|formatDate('MM月dd日')}}
       </span>
       <span>
-        <i class="date"></i>每周下午2:00~5:00
+        <i class="date"></i>
+        {{lessonList.lessonTime}}
       </span>
     </div>
-    <div>
-      <p class="card-price">
-        <span>￥</span>1300000
+    <div class="card-price-div">
+      <p class="card-price-p">
+        <span>￥</span>
+
+        {{lessonList.price}}
       </p>
       <a href="javascript:;" class="card-detail">查看详情</a>
     </div>
     <div class="card-time">
-      <p>500人已报名</p>
-      <p>报名截止2020-04-01 18:00</p>
+      <p>{{lessonList.reportNum}}人已报名</p>
+      <p>报名截止{{lessonList.deadLine|formatDate('yyyy-MM-dd hh:mm')}}</p>
     </div>
     <div class="card-btn">
-      <el-button>取消报名</el-button>
+      <!-- <el-button >取消报名</el-button> -->
+      <el-button @click="cancelLesson(lessonList.lessonId)">取消报名</el-button>
     </div>
   </div>
 </template>
@@ -36,13 +44,42 @@ export default {
   name: "mineOfflineCard",
   data() {
     return {
-        isTimeout:false
+      isTimeout: false
     };
+  },
+  props: {
+    lessonList: {
+      type: Object
+    }
+  },
+  methods: {
+    cancelLesson(e) {
+      console.log(e);
+      this.$api.recordList
+        .cancelLesson({
+          lessonId:e
+        })
+        .then(res => {
+         console.log(res)
+          
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   }
 };
 </script>
 
 <style lang="scss" scoped>
+.major-mame {
+  display: inline-block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 120px;
+  white-space: nowrap;
+  vertical-align: middle;
+}
 .badge {
   background: #fd5642;
   color: #fff;
@@ -54,26 +91,26 @@ export default {
   padding: 0 10px;
   margin-right: 5px;
   vertical-align: top;
-  &.bg-gray{
-       background: #b2b2b2;
+  &.bg-gray {
+    background: #b2b2b2;
   }
 }
 .card {
   height: 130px;
   border-bottom: 1px solid #eee;
-  .subject{
-      background: url('../../assets/icon/subject.png');
-      width: 12px;
+  .subject {
+    background: url("../../assets/icon/subject.png");
+    width: 12px;
   }
-  .datetime{
-      background: url('../../assets/icon/datetime.png');
-      width: 12px;
+  .datetime {
+    background: url("../../assets/icon/datetime.png");
+    width: 12px;
   }
   & > div {
     float: left;
   }
   &-msg {
-    width: 475px;
+    width: 500px;
     p {
       overflow: hidden;
       text-overflow: ellipsis;
@@ -86,8 +123,8 @@ export default {
     span {
       color: #999;
       font-size: 14px;
-      &+span{
-          margin-left: 30px;
+      & + span {
+        margin-left: 30px;
       }
     }
   }
@@ -99,16 +136,21 @@ export default {
     line-height: 24px;
   }
   &-price {
-    color: #c91a1d;
-    font-size: 24px;
-    margin-top: 45px;
-    span {
-      font-size: 18px;
+    &-p {
+      color: #c91a1d;
+      font-size: 24px;
+      margin-top: 45px;
+      span {
+        font-size: 18px;
+      }
+    }
+    &-div {
+      text-align: center;
+      padding-left: 20px;
     }
   }
   &-detail {
     display: block;
-    margin-left:15px; 
     font-size: 12px;
     color: #666;
     text-align: center;

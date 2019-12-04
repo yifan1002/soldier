@@ -4,7 +4,7 @@
       <div class="mine-top">
         <p class="mine-title">学习积分</p>
         <div class="mine-mark">
-          <p class="mine-mark-num">864</p>
+          <p class="mine-mark-num">{{pointList.point}}</p>
           <p class="mine-mark-word">成长总积分</p>
         </div>
       </div>
@@ -12,38 +12,62 @@
         <p class="mine-title">学习统计</p>
         <div class="mine-mark">
           <div class="mine-mark-box border-none">
-            <p class="mine-mark-num">15</p>
+            <p class="mine-mark-num">{{pointList.vodNum}}</p>
             <p class="mine-mark-word">视频课(门)</p>
           </div>
         </div>
         <div class="mine-mark">
           <div class="mine-mark-box">
-            <p class="mine-mark-num">125</p>
+            <p class="mine-mark-num">{{pointList.articleNum}}</p>
             <p class="mine-mark-word">文章(篇)</p>
           </div>
         </div>
         <div class="mine-mark">
           <div class="mine-mark-box">
-            <p class="mine-mark-num">30</p>
+            <p class="mine-mark-num">{{pointList.lessonNum}}</p>
             <p class="mine-mark-word">线下课(门)</p>
           </div>
         </div>
       </div>
     </div>
     <swiper></swiper>
-    <mineMark></mineMark>
+    <mineStudyCard :getPoint="getPoint"></mineStudyCard>
   </div>
 </template>
 
 <script>
 import swiper from "../../components/swiper/swiper";
-import mineMark from "../../components/mineMark/mineMark";
+import mineStudyCard from "../../components/card/mineStudyCard";
 export default {
   name: "mineStudy",
   data() {
-    return {};
+    return {
+      pointList: {},
+      swiperList: [],
+      getPoint:{}
+    };
   },
-  components: { swiper, mineMark },
+  components: { swiper, mineStudyCard },
+  created() {
+  
+    this.$api.myStudy
+      .myGetPoint()
+      .then(res => {
+        this.getPoint=res.data.data
+       
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    this.$api.myStudy
+      .myStudyCount()
+      .then(res => {
+        this.pointList = res.data.data;
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
 };
 </script>
 

@@ -1,15 +1,16 @@
 <template>
   <div class="mine-video" :class="size">
     <div class="mine-video-img">
-      <img src="../../../src/assets/img/class2.png" alt />
+      <!-- <img src="../../../src/assets/img/class2.png" alt /> -->
+      <img :src="vodList.pictureFile?vodList.pictureFile:require('../../../src/assets/img/class2.png')" alt="图片炸了" />
     </div>
     <div class="mine-video-title">
-      <a href="javascript:;">{{vodList.vod.intro}}</a>
+      <a href="javascript:;" v-text="vodList.vodName?vodList.vodName:'删除了'">{{vodList.vodName}}</a>
     </div>
     <div class="mine-video-footer">
-      <i class="times"></i>
-      <span v-text="vodList.vod.viewNum"></span>
-      <span class="mine-video-footer-right">观看于{{vodList.createTime|formatDate('yyyy-MM-dd')}}</span>
+      <i class="times"  v-if="vodList.vodNum!==''"></i>
+      <span v-text="vodList.vodNum"></span>
+      <span v-if="vodList.time" class="mine-video-footer-right">观看于{{vodList.time|formatDate('yyyy-MM-dd')}}</span>
     </div>
   </div>
 </template>
@@ -18,18 +19,16 @@
 export default {
   props: {
     vodList: {
-      type: Object,      
+      type: Object      
     },
     size: {
       type: String,
       default: ""
     }
   },
-  mounted(){
-    if(!this.vodList.vod.intro){
-      this.vodList.vod.intro="名称为空"
-    }
-  }
+  created(){
+   
+  },
 };
 </script>
 
@@ -95,7 +94,7 @@ export default {
   }
 
   &.mine-video-lg {
-    width: 283px;
+    width: 285px;
     height: 262px;
     border: 1px solid #e4e4e4;
 

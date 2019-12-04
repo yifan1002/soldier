@@ -1,34 +1,60 @@
 <template>
   <div>
     <el-tabs v-model="activeName" class="mytab">
-      <el-tab-pane label="视频课" name="first">
-        <mineVideoCard v-for="item in vodList" :vodList="item" :key="item.id"></mineVideoCard>
+      <el-tab-pane label="视频课" name="first" class="vod-list">
+        <div class="page-inner">
+          <mineVideoCard
+            class="mine-video-card"
+            v-for="item in vodList"
+            :vodList="item"
+            :key="item.id"
+          ></mineVideoCard>
+        </div>
+        <div class="pagination">
+          <el-pagination
+            layout="prev, pager, next"
+            :hide-on-single-page="true"
+            :current-page="currentPageVod"
+            @current-change="handleCurrentChangeVod"
+            :total="totalVod"
+            :page-size="12"
+          ></el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="资讯课" name="second">
-        <div>
-          <a href="javascript:;" class="info-class">
-            <span class="info-class-title">坚持和完善我国新型政党制度</span>
-            <span class="info-class-time">2019-11-08</span>
-          </a>
+        <div class="page-inner">
+          <div v-for="item in articleList" :key="item.articleId">
+            <a href="javascript:;" class="info-class">
+              <span class="info-class-title">{{item.articleName}}</span>
+              <span class="info-class-time">{{item.lastStudyTime|formatDate('yyyy-MM-dd')}}</span>
+            </a>
+          </div>
         </div>
-        <div>
-          <a href="javascript:;" class="info-class">
-            <span class="info-class-title">坚定中国特色制度自信 构筑民族复兴根本保障 “中国之治”展现制度自信</span>
-            <span class="info-class-time">2019-11-08</span>
-          </a>
-        </div>
-        <div>
-          <a href="javascript:;" class="info-class">
-            <span class="info-class-title">坚持和完善我国新型政党制度 讲清讲透“中国之治”背后的制</span>
-            <span class="info-class-time">2019-11-08</span>
-          </a>
+        <div class="pagination">
+          <el-pagination
+            layout="prev, pager, next"
+            :hide-on-single-page="true"
+            :current-page="currentPageArticle"
+            @current-change="handleCurrentChangeArticle"
+            :total="totalArticle"
+            :page-size="10"
+          ></el-pagination>
         </div>
       </el-tab-pane>
       <el-tab-pane label="线下课" name="third">
-        <classOffline></classOffline>
-        <classOffline></classOffline>
-        <classOffline></classOffline>
-        <classOffline></classOffline>
+        <div class="page-inner">
+          <mineOfflineCard v-for="item in lessonList" :key="item.lessonId" :lessonList="item"></mineOfflineCard>
+        </div>
+        <div class="pagination">
+          <el-pagination
+            layout="prev, pager, next"
+            :hide-on-single-page="true"
+            :current-page="currentPageLesson"
+            @current-change="handleCurrentChangeLesson"
+            :total="totalLesson"
+            :page-size="12"
+          ></el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -36,36 +62,108 @@
 
 <script>
 import mineVideoCard from "../../components/card/mineVideoCard";
-import classOffline from "../../components/classOffline/classOffline";
+import mineOfflineCard from "../../components/card/mineOfflineCard";
 export default {
   name: "classHistory",
   data() {
     return {
       activeName: "first",
-      vodList:[]
+      vodList: [],
+      articleList: [],
+      lessonList: [],
+      currentPageVod: 1,
+      totalVod: 20,
+      currentPageArticle: 1,
+      totalArticle: 20,
+      currentPageLesson: 1,
+      totalLesson: 20
     };
   },
   components: {
     mineVideoCard,
-    classOffline
+    mineOfflineCard
   },
-  created(){
-    this.$api.vod
-      .vodList({
-        currentPage: 1,
-        pageNum: 10
-      })
-      .then(res => {
-        this.vodList = res.data.data.list;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+  methods: {
+    handleCurrentChangeVod: function(currentPageVod) {
+      this.currentPageVod = currentPageVod;
+      this.getVodList();
+    },
+    handleCurrentChangeArticle: function(currentPageArticle) {
+      this.currentPageArticle = currentPageArticle;
+      this.getArticleList();
+    },
+    handleCurrentChangeLesson: function(currentPageLesson) {
+      this.currentPageLesson = currentPageLesson;
+      this.getLessonList();
+    },
+    getArticleList() {
+      // 文章列表
+      this.$api.recordList
+        .articleRecordList({
+          currentPage: this.currentPageArticle,
+          rowNum: 10
+        })
+        .then(res => {
+          this.articleList = res.data.data.list;
+          this.totalArticle = res.data.data.totalNum;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getVodList() {
+      // 视频列表
+      this.$api.recordList
+        .vodRecordList({
+          currentPage: this.currentPageVod,
+          rowNum: 10
+        })
+        .then(res => {
+          this.vodList = res.data.data.list;
+          this.totalVod = res.data.data.totalNum;
+          this.swiperList = res.data.data;
+          for (var key of this.vodList) {
+            if (key.lastStudyTime) {
+              key.time = key.lastStudyTime;
+            }
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getLessonList() {
+      // 线下课列表
+      this.$api.recordList
+        .lessonRecordList({
+          currentPage: this.currentPageLesson,
+          rowNum: 10
+        })
+        .then(res => {
+          this.lessonList = res.data.data.list;
+          this.totalLesson = res.data.data.totalNum;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  },
+  created() {
+    this.getArticleList();
+    this.getVodList();
+    this.getLessonList();
   }
-
-
 };
 </script>
 
 <style lang="scss" scoped>
+.mine-video-card {
+  margin: 0 20px 20px 0;
+}
+.vod-list {
+  margin-right: -20px;
+}
+.page-inner{
+   min-height: 650px;
+}
 </style>

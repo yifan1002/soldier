@@ -71,75 +71,75 @@
 				menus: [
 					{
 						title: '首页',
-						url: 'home'
+						url: '/home'
 					},
 					{
 						title: '政策资讯',
-						url: 'javascript:;'
+						url: '/javascript:;'
 					},
 					{
 						title: '招聘平台',
-						url: 'recruitment',
+						url: '/recruitment',
 						subMenus: [
 							{
 								title: '我的简历',
-								url: 'resume'
+								url: '/resume'
 							},
 							{
 								title: '职位查询',
-								url: 'javascript:;'
+								url: '/javascript:;'
 							},
 							{
 								title: '应聘进度',
-								url: 'javascript:;'
+								url: '/javascript:;'
 							},
 							{
 								title: '招聘会',
-								url: 'javascript:;'
+								url: '/javascript:;'
 							}
 						]
 					},
 					{
 						title: '教育培训',
-						url: 'training',
+						url: '/training',
 						subMenus: [
 							{
 								title: '学历教育',
-								url: 'javascript:;'
+								url: '/javascript:;'
 							},
 							{
 								title: '培训',
-								url: 'javascript:;'
+								url: '/javascript:;'
 							},
 							{
 								title: '网络学院',
-								url: 'college'
+								url: '/college'
 							}
 						]
 					},
 					{
 						title: '我的空间',
-						url: 'interspace',
+						url: '/interspace',
 						subMenus: [
 							{
 								title: '个人信息',
-								url: 'userInfo'
+								url: '/userInfo'
 							},
 							{
 								title: '我的积分',
-								url: 'accumulatePoints'
+								url: '/accumulatePoints'
 							},
 							{
 								title: '我的学习',
-								url: 'mine'
+								url: '/mine'
 							},
 							{
 								title: '就业状态确认',
-								url: 'javascript:;'
+								url: '/javascript:;'
 							},
 							{
 								title: '零就业家庭申请',
-								url: 'javascript:;'
+								url: '/javascript:;'
 							}
 						]
 					}

@@ -1,6 +1,9 @@
 <template>
   <div>
-    <table>
+    <div v-if="!pointList.length">
+      没有记录没有记录没有记录没有记录没有记录没有记录
+    </div>
+    <table v-else>
       <thead>
         <tr>
           <td>行为</td>
@@ -9,15 +12,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>1</td>
-          <td>1</td>
-          <td>1</td>
-        </tr>
-        <tr>
-          <td>1</td>
-          <td>1</td>
-          <td>1</td>
+        <tr v-for="point in pointList" :key="point.id">
+          <td>{{point.pointRemark}}</td>
+          <td>{{point.behaviorTime|formatDate('yyyy-MM-dd   hh:mm:ss')}}</td>
+          <td>+{{point.pointValue}}</td>
         </tr>
       </tbody>
     </table>
@@ -26,7 +24,19 @@
 
 <script>
 export default {
-  name: "tableA"
+  props: {
+    pointList: {
+      type: Array
+    },
+    page:{
+      type: Number
+    }
+  },
+  name: "tableA",
+
+  mounted() {
+    console.log(this.pointList);
+  }
 };
 </script>
 

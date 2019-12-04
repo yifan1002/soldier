@@ -20,10 +20,11 @@ export default {
 </script>
 
 <style lang="scss">
-body,html{
-  height: 100%
+body,
+html {
+  height: 100%;
 }
-.footer{
+.footer {
   position: absolute;
   bottom: 0;
 }
@@ -83,24 +84,37 @@ body,html{
 .pagination {
   text-align: center;
   li.number {
-    border: 1px solid #999;
+    border: 1px solid #ccc;
     margin-left: 10px;
     border-radius: 2px;
     min-width: 30px;
     height: 30px;
+    color: #666;
+  }
+  .el-pagination .btn-prev,
+  .btn-next {
+    border: 1px solid #ccc;
+    min-width: 30px;
+    height: 30px;
+    border-radius: 2px;
+    padding: 0 9px 0 9px;
+  }
+  .el-pagination .btn-next {
+    margin-left: 10px;
+    padding: 0 9px 0 9px;
   }
   .el-pager li.active {
     border: 1px solid #26afff;
     & + li {
-      border-left: 1px solid #999;
+      border-left: 1px solid #ccc;
     }
   }
 }
-.m-r-0{
-  margin-right:0; 
+.m-r-0 {
+  margin-right: 0;
 }
-.m-r-20{
-  margin-right:20px!important; 
+.m-r-20 {
+  margin-right: 20px !important;
 }
 .icon-home {
   width: 20px;

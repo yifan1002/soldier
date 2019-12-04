@@ -24,19 +24,19 @@ export default {
     mineStudyCard
   },
   created() {
-    this.$api.collect
-      .collect({
-        collectType: "ARTICLE",
-        currentPage: 1,
-        pageNum: 10
-      })
-      .then(res => {
-        console.log(res);
-        // console.log(res.headers.expiredtoken);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // this.$api.collect
+    //   .collect({
+    //     collectType: "ARTICLE",
+    //     currentPage: 1,
+    //     pageNum: 10
+    //   })
+    //   .then(res => {
+    //     //console.log(res);
+    //     // console.log(res.headers.expiredtoken);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   },
   mounted() {
    

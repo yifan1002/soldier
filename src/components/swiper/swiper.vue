@@ -5,7 +5,7 @@
       <a class="swiper-btn-prev" @click="move<0?move+=width:move" href="javascript:;">&lt;</a>
       <a
         class="swiper-btn-next"
-        @click="move>-width*(vodList.length-page)?move-=width:move"
+        @click="move>-width*(swiperList.length-page)?move-=width:move"
         href="javascript:;"
       >&gt;</a>
       <span>更多视频</span>
@@ -14,7 +14,7 @@
       <div class="swiper-inner">
         <!-- 移动部分 -->
         <div :style="{'margin-left':move+'px','transition':'all .5s'}">
-          <mineVideo v-for="(item,index) in vodList" :vodList="item" :key="index" class="m-r-20"></mineVideo>
+          <mineVideo v-for="(item,index) in swiperList" :vodList="item" :key="index" class="m-r-20"></mineVideo>
         </div>
       </div>
     </div>
@@ -27,76 +27,31 @@ export default {
   name: "swiper",
   data() {
     return {
-      vodList: [
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-        { createTime: 1574678179000,
-          vod: {
-            intro: "电焊基础手焊基础手法指法指法指法指导", 
-            viewNum:12
-          }
-        },
-      ],
       move: 0,
       //移动距离
       width: 237,
       //显示卡片数
-      page: 4
+      page: 4,
+      swiperList: []
     };
   },
   methods: {},
+  created() {
+    this.$api.myStudy
+      .myRecentStudyVod()
+      .then(res => {
+				console.log(res.data.data);
+        this.swiperList = res.data.data;
+        for (var key of this.swiperList) {
+          if (key.lastStudyTime) {
+            key.time = key.lastStudyTime;
+          } 
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  },
   components: {
     mineVideo
   }

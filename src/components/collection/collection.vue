@@ -2,27 +2,49 @@
   <div>
     <el-tabs v-model="activeName" class="mytab">
       <el-tab-pane label="文章" name="first">
-        <div>
-          <router-link 
+        <div style="min-height:650px;">
+          <router-link
             v-for="item in articleList"
             :key="item.id"
             :to="{path:'articleDetail',query:{id:item.id}}"
             class="info-class"
             style="display:block;"
           >
-            <span class="info-class-time">{{item.createTime|formatDate('YYYY-MM-DD')}}</span>
+            <span class="info-class-time">{{item.createTime|formatDate('yyyy-MM-dd')}}</span>
             {{item.objectName}}
           </router-link>
         </div>
+        <div class="pagination">
+          <el-pagination
+            layout="prev, pager, next"
+            :hide-on-single-page="true"
+            :current-page="currentPage1"
+            @current-change="handleCurrentChange1"
+            :total="total1"
+            :page-size="10"
+          ></el-pagination>
+        </div>
       </el-tab-pane>
       <el-tab-pane label="视频课" name="second">
-        <mineVideoCard
-          v-for="(item,index) in vodList"
-          :key="item.id"
-          class="collection"
-          :vodList="item"
-          :class="(index+1)%4==0?'m-r-0':'m-r-20'"
-        ></mineVideoCard>
+        <div style="min-height:650px;">
+          <mineVideoCard
+            v-for="(item,index) in vodList"
+            :key="item.id"
+            class="collection"
+            :vodList="item"
+            :class="(index+1)%4==0?'m-r-0':'m-r-20'"
+          ></mineVideoCard>
+        </div>
+        <div class="pagination">
+          <el-pagination
+            layout="prev, pager, next"
+            :hide-on-single-page="true"
+            :current-page="currentPage"
+            @current-change="handleCurrentChange"
+            :total="total"
+            :page-size="12"
+          ></el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -36,43 +58,66 @@ export default {
     return {
       activeName: "first",
       articleList: [],
-      vodList: []
+      vodList: [],
+      total: 20,
+      total1: 20,
+      currentPage: 1,
+      currentPage1: 1
     };
+  },
+  methods: {
+    handleCurrentChange: function(currentPage) {
+      this.currentPage = currentPage;
+      this.getvodList();
+    },
+    handleCurrentChange1: function(currentPage1) {
+      this.currentPage1 = currentPage1;
+      this.getArticleList();
+    },
+    getvodList() {
+      this.$api.collect
+        .collectVod({
+          collectType: "VOD",
+          currentPage: this.currentPage,
+          pageNum: 12
+        })
+        .then(res => {
+          this.vodList = res.data.data.list;
+          this.total = res.data.data.totalNum;
+          console.log(this.vodList)
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    },
+    getArticleList() {
+      this.$api.collect
+        .collectArticle({
+          collectType: "ARTICLE",
+          currentPage: this.currentPage1,
+          pageNum: 10
+        })
+        .then(res => {
+          this.articleList = res.data.data.list;
+          this.total1 = res.data.data.totalNum;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
   },
   components: {
     mineVideoCard
   },
   created() {
-    this.$api.collect
-      .collect({
-        collectType: "ARTICLE",
-        currentPage: 1,
-        pageNum: 10
-      })
-      .then(res => {
-        this.articleList = res.data.data.list;
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    this.$api.collect
-      .collect({
-        collectType: "VOD",
-        currentPage: 1,
-        pageNum: 10
-      })
-      .then(res => {
-        this.vodList = res.data.data.list;
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getvodList();
+    this.getArticleList();
   }
 };
 </script>
 
 <style>
-.collection .mine-video-footer-right {
-  display: none;
+.pagination {
+  text-align: center;
 }
 </style>

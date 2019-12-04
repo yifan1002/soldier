@@ -2,7 +2,7 @@
  * 接口域名的管理
  */
 const base = {
-	url: 'http://dev.exstudy.com/', // 基础api网关，修改该值使用
+	url: '/api', // 基础api网关，修改该值使用
 	sq: 'https://api.apiopen.top',
 	bd: 'https://c.y.qq.com'
 }
