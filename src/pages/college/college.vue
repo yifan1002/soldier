@@ -93,6 +93,8 @@
 			// }
 		},
 		created() {
+			console.log(process.env);
+			
 			this.changeMenu("training");
 			this.changeSubMenu("college");
 

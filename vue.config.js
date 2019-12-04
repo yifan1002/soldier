@@ -5,6 +5,10 @@ function resolve(dir) {
 }
 
 module.exports = {
+	publicPath: process.env.NODE_ENV === 'production' ? './' : '',
+	productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
+	outputDir: process.env.outputDir,
+	
 	devServer: {
 		proxy: {
 			'/api': {
