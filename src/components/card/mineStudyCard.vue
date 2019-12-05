@@ -70,12 +70,12 @@
       <img class="mine-study-img" src="../../../src/assets/img/mine5.png" alt />
       <p class="mine-study-title">收藏文章</p>
       <p class="mine-study-info">
-        收藏文章一篇
-        <span>+1分</span>
+        收藏文章{{getPoint.articleTotalCollectTimes}}篇
+        <span>+{{getPoint.articleTotalCollectPoint}}分</span>
       </p>
       <div class="mine-study-progress">
         <p>{{getPoint.collectArticle}}分/{{getPoint.articleTotalCollectLimit}}分</p>
-        <div :style="{width:120*(getPoint/getPoint.articleTotalCollectLimit)+'px'}" class="mine-study-success"></div>
+        <div :style="{width:120*(getPoint.collectArticle/getPoint.articleTotalCollectLimit)+'px'}" class="mine-study-success"></div>
       </div>
       <el-Button type="primary" ghost class="btn-study">去看看</el-Button>
     </div>
@@ -86,12 +86,12 @@
       <img class="mine-study-img" src="../../../src/assets/img/mine6.png" alt />
       <p class="mine-study-title">收藏视频</p>
       <p class="mine-study-info">
-        收藏视频一个
-        <span>+1分</span>
+        收藏视频{{getPoint.vodTotalCollectTimes}}个
+        <span>+{{getPoint.vodTotalCollectPoint}}分</span>
       </p>
       <div class="mine-study-progress">
-        <p>{{getPoint.collectArticle}}分/{{getPoint.articleTotalCollectLimit}}分</p>
-        <div :style="{width:120*(getPoint/getPoint.articleTotalCollectLimit)+'px'}" class="mine-study-success"></div>
+        <p>{{getPoint.collectVod}}分/{{getPoint.vodTotalCollectLimit}}分</p>
+        <div :style="{width:120*(getPoint.collectVod/getPoint.vodTotalCollectLimit)+'px'}" class="mine-study-success"></div>
       </div>
       <el-Button type="primary" ghost class="btn-study">去学习</el-Button>
     </div>

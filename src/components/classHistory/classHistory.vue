@@ -24,10 +24,10 @@
       <el-tab-pane label="资讯课" name="second">
         <div class="page-inner">
           <div v-for="item in articleList" :key="item.articleId">
-            <a href="javascript:;" class="info-class">
+            <router-link :to="'info/'+item.articleId" href="javascript:;" class="info-class">
               <span class="info-class-title">{{item.articleName}}</span>
               <span class="info-class-time">{{item.lastStudyTime|formatDate('yyyy-MM-dd')}}</span>
-            </a>
+            </router-link>
           </div>
         </div>
         <div class="pagination">

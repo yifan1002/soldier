@@ -6,7 +6,7 @@
           <router-link
             v-for="item in articleList"
             :key="item.id"
-            :to="{path:'articleDetail',query:{id:item.id}}"
+            :to="{path:'info/'+item.id}"
             class="info-class"
             style="display:block;"
           >
@@ -99,6 +99,7 @@ export default {
         })
         .then(res => {
           this.articleList = res.data.data.list;
+          console.log(this.articleList)
           this.total1 = res.data.data.totalNum;
         })
         .catch(err => {

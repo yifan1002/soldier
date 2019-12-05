@@ -1,22 +1,33 @@
 <template>
-  <div class="swiper">
-    <h3 class="mine-title">最近学习视频</h3>
-    <div class="swiper-btn">
-      <a class="swiper-btn-prev" @click="move<0?move+=width:move" href="javascript:;">&lt;</a>
-      <a
-        class="swiper-btn-next"
-        @click="move>-width*(swiperList.length-page)?move-=width:move"
-        href="javascript:;"
-      >&gt;</a>
-      <span>更多视频</span>
-    </div>
-    <div class="swiper-outer">
-      <div class="swiper-inner">
-        <!-- 移动部分 -->
-        <div :style="{'margin-left':move+'px','transition':'all .5s'}">
-          <mineVideo v-for="(item,index) in swiperList" :vodList="item" :key="index" class="m-r-20"></mineVideo>
+  <div>
+    <div class="swiper" v-if="swiperList">
+      <h3 class="mine-title">最近学习视频</h3>
+      <div class="swiper-btn">
+        <a class="swiper-btn-prev" @click="move<0?move+=width:move" href="javascript:;">&lt;</a>
+        <a
+          class="swiper-btn-next"
+          @click="move>-width*(swiperList.length-page)?move-=width:move"
+          href="javascript:;"
+        >&gt;</a>
+        <span>更多视频</span>
+      </div>
+      <div class="swiper-outer">
+        <div class="swiper-inner">
+          <!-- 移动部分 -->
+          <div :style="{'margin-left':move+'px','transition':'all .5s'}">
+            <mineVideo
+              v-for="(item,index) in swiperList"
+              :vodList="item"
+              :key="index"
+              class="m-r-20"
+            ></mineVideo>
+          </div>
         </div>
       </div>
+    </div>
+    <div class="no-content" v-else>
+      <img src="../../../src/assets/empty/video.png" alt="">
+      <p>还没有学习记录</p>
     </div>
   </div>
 </template>
@@ -45,7 +56,7 @@ export default {
         for (var key of this.swiperList) {
           if (key.lastStudyTime) {
             key.time = key.lastStudyTime;
-          } 
+          }
         }
       })
       .catch(err => {
@@ -59,6 +70,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.no-content {
+  margin-top: 40px;
+  margin-bottom: 20px;
+  height: 200px;
+  text-align: center;
+  p{
+    color: #aaa;
+    margin-top: 10px  ;
+  }
+}
 .mine-title {
   float: left;
 }

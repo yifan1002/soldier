@@ -5,7 +5,7 @@
       <img :src="vodList.pictureFile?vodList.pictureFile:require('../../../src/assets/img/class2.png')" alt="图片炸了" />
     </div>
     <div class="mine-video-title">
-      <a href="javascript:;" v-text="vodList.vodName?vodList.vodName:'删除了'">{{vodList.vodName}}</a>
+      <router-link :to="{path:'articleDetail/'+vodList.vodId}" href="javascript:;" v-text="vodList.vodName?vodList.vodName:'已删除'">{{vodList.vodName}}</router-link>
     </div>
     <div class="mine-video-footer">
       <i class="times"  v-if="vodList.vodNum!==''"></i>
@@ -42,7 +42,6 @@ export default {
   height: 193px;
   cursor: pointer;
   margin: 0 0 20px 0;
-
   &:hover {
     box-shadow: #e4e4e4 0px 0px 6px;
 

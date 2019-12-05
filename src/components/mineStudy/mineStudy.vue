@@ -42,7 +42,12 @@ export default {
   name: "mineStudy",
   data() {
     return {
-      pointList: {},
+      pointList: {
+        point:0,
+        vodNum:0,
+        articleNum:0,
+        lessonNum:0
+      },
       swiperList: [],
       getPoint:{}
     };

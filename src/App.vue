@@ -56,7 +56,21 @@ html {
     width: 800px;
   }
 }
-
+.badge {
+  background: #fd5642;
+  color: #fff;
+  display: inline-block;
+  font-size: 12px;
+  line-height: 20px;
+  border-radius: 10px;
+  border-bottom-left-radius: 0;
+  padding: 0 10px;
+  margin-right: 5px;
+  vertical-align: top;
+  &.bg-gray {
+    background: #b2b2b2;
+  }
+}
 .mine-title {
   font-size: 18px;
   color: $c-darken;

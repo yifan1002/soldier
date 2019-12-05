@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div v-if="!pointList.length">
-      没有记录没有记录没有记录没有记录没有记录没有记录
+    <div class="no-content" v-if="!pointList.length">
+      <img src="../../../src/assets/empty/search.png" alt />
+      <p>还没有学习记录</p>
     </div>
     <table v-else>
       <thead>
@@ -14,7 +15,7 @@
       <tbody>
         <tr v-for="point in pointList" :key="point.id">
           <td>{{point.pointRemark}}</td>
-          <td>{{point.behaviorTime|formatDate('yyyy-MM-dd   hh:mm:ss')}}</td>
+          <td>{{point.behaviorTime|formatDate('yyyy-MM-dd hh:mm:ss')}}</td>
           <td>+{{point.pointValue}}</td>
         </tr>
       </tbody>
@@ -28,7 +29,7 @@ export default {
     pointList: {
       type: Array
     },
-    page:{
+    page: {
       type: Number
     }
   },
@@ -41,6 +42,14 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.no-content{
+  text-align: center;
+  margin-top:100px; 
+   p{
+    color: #aaa;
+    margin-top: 10px  ;
+  }
+}
 table {
   border-spacing: 0;
   border-collapse: collapse;

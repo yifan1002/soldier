@@ -1,11 +1,6 @@
 <template>
   <div class="outer-box bg-footer clearfix">
-    <div class="inner-box">
-      <p>
-        <a href="javascript;;">关于我们</a>|
-        <a href="javascript;;">加入收藏</a>
-      </p>
-      <p>主办单位：中华人民共和国退役军人事务部</p>
+    <div ref="footerIndex" class="inner-box">
     </div>
   </div>
 </template>
@@ -15,6 +10,18 @@ export default {
   name: "Footer",
   data() {
     return {};
+  },
+  mounted() {
+    this.$api.footer
+      .footer()
+      .then(res => {
+        var footer = res.data.data;
+        this.$refs.footerIndex.innerHTML = footer;
+        // console.log(res.headers.expiredtoken);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 };
 </script>
@@ -27,15 +34,19 @@ export default {
   bottom: 0;
   z-index: 9999;
 }
-p {
-  color: #fff;
+.inner-box {
   text-align: center;
-  font-size: 14px;
-  &:first-child{
-      margin-top:30px 
+  padding-top: 20px;
+  color: #fff;
+  /deep/ a {
+    color: #fff !important;
+    font-size: 14px;
   }
-   a {
-    color: #fff;
+  /deep/ p+p{
+    font-size: 14px;
+  }
+  /deep/ .mx-5{
+    margin: 0 5px;
   }
 }
 </style>

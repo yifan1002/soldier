@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-msg">
       <h1 class="card-title">
-        <i v-if="isTimeout" class="badge bg-gray">已过期</i>
+        <i v-if="todayDate>lessonList.deadLine" class="badge bg-gray">已过期</i>
         <i v-else class="badge">火热报名</i>
         {{lessonList.lessonName}}
       </h1>
@@ -23,10 +23,9 @@
     <div class="card-price-div">
       <p class="card-price-p">
         <span>￥</span>
-
         {{lessonList.price}}
       </p>
-      <a href="javascript:;" class="card-detail">查看详情</a>
+      <router-link :to="{path:'articleDetail/'+lessonList.lessonId}" class="card-detail">查看详情</router-link>
     </div>
     <div class="card-time">
       <p>{{lessonList.reportNum}}人已报名</p>
@@ -34,7 +33,10 @@
     </div>
     <div class="card-btn">
       <!-- <el-button >取消报名</el-button> -->
-      <el-button @click="cancelLesson(lessonList.lessonId)">取消报名</el-button>
+      <el-button
+        v-if="!todayDate>lessonList.beginTime"
+        @click="cancelLesson(lessonList.lessonId)"
+      >取消报名</el-button>
     </div>
   </div>
 </template>
@@ -44,7 +46,7 @@ export default {
   name: "mineOfflineCard",
   data() {
     return {
-      isTimeout: false
+      todayDate: ""
     };
   },
   props: {
@@ -57,16 +59,18 @@ export default {
       console.log(e);
       this.$api.recordList
         .cancelLesson({
-          lessonId:e
+          lessonId: e
         })
         .then(res => {
-         console.log(res)
-          
+          console.log(res);
         })
         .catch(err => {
           console.log(err);
         });
     }
+  },
+  created() {
+    this.todayDate = Date.parse(new Date());
   }
 };
 </script>
