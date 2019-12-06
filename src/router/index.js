@@ -75,7 +75,7 @@ if (process.env.VUE_APP_CURRENTMODE == 'dev') {
 	});
 } else {
 	vueRouter = new VueRouter({
-		// mode: 'history',
+		mode: 'history',
 		routes
 	});
 }
