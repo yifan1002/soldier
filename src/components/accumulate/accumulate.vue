@@ -137,7 +137,6 @@ export default {
       this.page = e;
     },
     getList() {
-      console.log(this.startDate);
       this.$api.pointRecord
         .pointRecord({
           currentPage: this.currentPage,

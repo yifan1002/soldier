@@ -35,9 +35,6 @@ export default {
   },
   name: "tableA",
 
-  mounted() {
-    console.log(this.pointList);
-  }
 };
 </script>
 

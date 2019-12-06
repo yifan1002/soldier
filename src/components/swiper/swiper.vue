@@ -51,7 +51,6 @@ export default {
     this.$api.myStudy
       .myRecentStudyVod()
       .then(res => {
-				console.log(res.data.data);
         this.swiperList = res.data.data;
         for (var key of this.swiperList) {
           if (key.lastStudyTime) {

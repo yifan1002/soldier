@@ -1,14 +1,15 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" class="mytab">
+    <el-tabs v-model="activeName" class="mytab" @tab-click="handleClick">
       <el-tab-pane label="文章" name="first">
         <div style="min-height:650px;">
           <router-link
             v-for="item in articleList"
             :key="item.id"
-            :to="{path:'info/'+item.id}"
-            class="info-class"
+            :to="{path:'/info?id='+item.id}"
+            class="info-class clearfix"
             style="display:block;"
+            target="_blank"
           >
             <span class="info-class-time">{{item.createTime|formatDate('yyyy-MM-dd')}}</span>
             {{item.objectName}}
@@ -66,6 +67,16 @@ export default {
     };
   },
   methods: {
+    handleClick(tab, event) {
+      console.log(tab, event);
+      if (tab.name == "first") {
+        // 触发‘配置管理’事件
+        this.getArticleList();
+      } else {
+        // 触发‘用户管理’事件
+        this.getvodList();
+      } 
+    },
     handleCurrentChange: function(currentPage) {
       this.currentPage = currentPage;
       this.getvodList();
@@ -84,7 +95,6 @@ export default {
         .then(res => {
           this.vodList = res.data.data.list;
           this.total = res.data.data.totalNum;
-          console.log(this.vodList)
         })
         .catch(err => {
           console.log(err);
@@ -99,7 +109,6 @@ export default {
         })
         .then(res => {
           this.articleList = res.data.data.list;
-          console.log(this.articleList)
           this.total1 = res.data.data.totalNum;
         })
         .catch(err => {
@@ -111,7 +120,6 @@ export default {
     mineVideoCard
   },
   created() {
-    this.getvodList();
     this.getArticleList();
   }
 };

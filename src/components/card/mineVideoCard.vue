@@ -2,15 +2,25 @@
   <div class="mine-video" :class="size">
     <div class="mine-video-img">
       <!-- <img src="../../../src/assets/img/class2.png" alt /> -->
-      <img :src="vodList.pictureFile?vodList.pictureFile:require('../../../src/assets/img/class2.png')" alt="图片炸了" />
+      <img
+        :src="vodList.pictureFile?vodList.pictureFile:require('../../../src/assets/img/class2.png')"
+        alt="图片"
+      />
     </div>
     <div class="mine-video-title">
-      <router-link :to="{path:'articleDetail/'+vodList.vodId}" href="javascript:;" v-text="vodList.vodName?vodList.vodName:'已删除'">{{vodList.vodName}}</router-link>
+      <router-link
+        :to="{path:'video?id='+vodList.vodId}"
+        target="_blank"
+        v-text="vodList.vodName?vodList.vodName:'已删除'"
+      >{{vodList.vodName}}</router-link>
     </div>
     <div class="mine-video-footer">
-      <i class="times"  v-if="vodList.vodNum!==''"></i>
+      <i class="times" v-if="vodList.vodNum!==''"></i>
       <span v-text="vodList.vodNum"></span>
-      <span v-if="vodList.time" class="mine-video-footer-right">观看于{{vodList.time|formatDate('yyyy-MM-dd')}}</span>
+      <span
+        v-if="vodList.time"
+        class="mine-video-footer-right"
+      >观看于{{vodList.time|formatDate('yyyy-MM-dd')}}</span>
     </div>
   </div>
 </template>
@@ -19,16 +29,14 @@
 export default {
   props: {
     vodList: {
-      type: Object      
+      type: Object
     },
     size: {
       type: String,
       default: ""
     }
   },
-  created(){
-   
-  },
+  created() {}
 };
 </script>
 

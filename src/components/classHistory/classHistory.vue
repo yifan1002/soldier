@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs v-model="activeName" class="mytab">
+    <el-tabs v-model="activeName" class="mytab" @tab-click="handleClick">
       <el-tab-pane label="视频课" name="first" class="vod-list">
         <div class="page-inner">
           <mineVideoCard
@@ -24,7 +24,7 @@
       <el-tab-pane label="资讯课" name="second">
         <div class="page-inner">
           <div v-for="item in articleList" :key="item.articleId">
-            <router-link :to="'info/'+item.articleId" href="javascript:;" class="info-class">
+            <router-link :to="'/info?id='+item.articleId" target="_blank" class="info-class">
               <span class="info-class-title">{{item.articleName}}</span>
               <span class="info-class-time">{{item.lastStudyTime|formatDate('yyyy-MM-dd')}}</span>
             </router-link>
@@ -96,6 +96,19 @@ export default {
       this.currentPageLesson = currentPageLesson;
       this.getLessonList();
     },
+    handleClick(tab, event) {
+      console.log(tab, event);
+      if (tab.name == "first") {
+        // 触发‘配置管理’事件
+        this.getVodList();
+      } else if (tab.name == "second") {
+        // 触发‘用户管理’事件
+        this.getArticleList()
+      } else {
+        // 触发‘用户管理’事件
+        this.getLessonList();
+      }
+    },
     getArticleList() {
       // 文章列表
       this.$api.recordList
@@ -149,9 +162,7 @@ export default {
     }
   },
   created() {
-    this.getArticleList();
     this.getVodList();
-    this.getLessonList();
   }
 };
 </script>
@@ -163,7 +174,7 @@ export default {
 .vod-list {
   margin-right: -20px;
 }
-.page-inner{
-   min-height: 650px;
+.page-inner {
+  min-height: 650px;
 }
 </style>

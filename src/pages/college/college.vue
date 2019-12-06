@@ -12,7 +12,7 @@
 				>
 					<el-carousel-item v-for="(banner, index) in bannerList" :key="index">
 						<router-link
-							:to="'/articleDetail/' + banner.articleId"
+							:to="'/info?id=' + banner.articleId"
 							target="_blank"
 							:style="{'background-image' : 'url(' + banner.pictureFile + ')'}"
 						>
@@ -33,7 +33,7 @@
 					<ul class="news-list clearfix">
 						<li v-for="(article, index) in articleList" :key="index">
 							<router-link
-								:to="{path:'/articleDetail/' + article.id}"
+								:to="{path:'/info?id=' + article.id}"
 								target="_blank"
 							>
 								<span class="time">{{ article.auditTime | formatDate('yy-MM-dd') }}</span>
@@ -85,11 +85,11 @@
 		},
 		methods: {
 			...mapMutations(["changeMenu", "changeSubMenu"]),
-			// articleDetail(e) {
+			// info(e) {
 			//   console.log(e);
 			//   let articleid = e.target.dataset.articleid;
 			//   if (!articleid) articleid = e.path[1].dataset.articleid;
-			//   this.$router.push(`/articleDetail/${articleid}`);
+			//   this.$router.push(`/info/${articleid}`);
 			// }
 		},
 		created() {
@@ -122,11 +122,14 @@
 			this.$api.vod
 				.homeVods({})
 				.then(res => {
-					// console.log('获取视频', res);
+					console.log('获取视频', res);
 					this.vodList = res.data.data;
 					for (let vod of this.vodList) {
 						if (vod.auditTime) {
 							vod.time = vod.auditTime;
+						}
+						if (vod.id) {
+							vod.vodId = vod.id;
 						}
 					}
 				})

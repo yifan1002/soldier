@@ -3,7 +3,8 @@
     <div class="outter-box" style="background:#000;">
       <div class="inner-box clearfix">
         <h1 class="title">
-          <i class="badge bg-myblue">思想政治</i>电焊基础手法指导电焊指导电焊基础手法指导电焊基础手法指导
+          <i class="badge bg-myblue">{{videoDetail.sortName}}</i>
+          {{videoDetail.vodName}}
         </h1>
         <div class="video-part"></div>
         <!-- 外层盒子 -->
@@ -11,63 +12,17 @@
           <div class="video-list-btn clearfix">
             <a href="javascript:;">目录</a>
           </div>
-          <happy-scroll color="#999" size="3">
+          <happy-scroll color="#999" size="3" resize>
             <!-- 内层盒子——内容区 -->
             <div class="video-list-content">
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计序设计序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
-              </router-link>
-              <router-link to="javascript:;">
-                <span class="video-item-num">04</span>
-                <span class="video-item-title">C语言程序设计程序设计（下）</span>
-                <span class="video-item-time">1:43:30</span>
+              <router-link
+                :to="{path:'/video/'+item.id}"
+                v-for="(item,index) in videoList"
+                :key="index"
+              >
+                <span class="video-item-num">{{"0"+(index+1)}}</span>
+                <span class="video-item-title">{{item.fileName}}</span>
+                <span class="video-item-time">{{item.videoDurationStr}}</span>
               </router-link>
             </div>
           </happy-scroll>
@@ -77,26 +32,48 @@
         <p>
           <span>来源：浙江省杭州市退役军人事务处</span>
           <span>上传时间：2018-10-14</span>
-          <span>浏览：2.3万</span>
+          <span>浏览：{{videoDetail.viewNumWan}}万</span>
         </p>
       </div>
     </div>
     <div class="video-detail inner-box">
-        <p class="video-detail-tab">课程介绍</p>
-        <div class="video-detail-box">
-            <p>1312</p>
-            <p>1312</p>
-            <p>1312</p>
-            <p>1312</p>
-            <p>1312</p>
-            <p>1312</p>
-        </div>
+      <p class="video-detail-tab">课程介绍</p>
+      <div class="video-detail-box">
+        <p>{{videoDetail.intro}}</p>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  data() {
+    return {
+      videoDetail: {},
+      videoList: []
+    };
+  },
+  created() {
+    this.getVodDetail();
+  },
+  methods: {
+    getVodDetail() {
+      var id=this.$route.query.id;
+      this.$api.videoclass
+        .vodDetail({
+          id: id
+        })
+        .then(res => {
+          this.videoDetail = res.data.data;
+          console.log(this.videoDetail);
+          this.videoList = res.data.data.vodVideoList;
+        })
+        .catch(err => {
+          console.log(err);
+        });
+    }
+  }
+};
 </script>
 
 <style lang="scss" scoped>
@@ -129,35 +106,39 @@ export default {};
       }
     }
   }
-  &-detail{
-      &-box{
-          width: 1000px;
-          margin: 0 auto;
-      }
-      height: 500px;
-      border: 1px solid #e4e4e4;
-      margin-top:20px; 
-      p{
-          color: #333;
-          line-height: 32px;
-          font-size: 16px;
-      }
-      &-tab{
-          width: 120px;
-          text-align: center;
-          padding: 5px 0;
-          border-top: 2px solid #0090f5;
-          position: relative;
-          top: -1px;
-      }
+  &-detail {
+    &-box {
+      width: 1000px;
+      margin: 0 auto;
+    }
+    height: 500px;
+    border: 1px solid #e4e4e4;
+    margin-top: 20px;
+    p {
+      color: #333;
+      line-height: 32px;
+      font-size: 16px;
+    }
+    &-tab {
+      width: 120px;
+      text-align: center;
+      padding: 5px 0;
+      border-top: 2px solid #0090f5;
+      position: relative;
+      top: -1px;
+    }
   }
   &-list {
     width: 289px;
     float: right;
-    background: rgba($color: #2d2d2d, $alpha: 1);
+    background: #2d2d2d;
     height: 518px;
     color: #fff;
-    /deep/ .happy-scroll-container .happy-scroll-content {
+    /deep/ .happy-scroll {
+      background: #333;
+      min-height: 500px;
+    }
+    /deep/ .happy-scroll-strip--vertical {
       background: #333;
     }
     &-btn {
@@ -177,11 +158,13 @@ export default {};
     &-content {
       a {
         display: block;
-        width: 280px;
+        width: 286px;
         color: #999;
         font-size: 16px;
         line-height: 24px;
         margin: 20px 0;
+        padding-right: 5px;
+        box-sizing: border-box;
       }
     }
   }
@@ -193,6 +176,7 @@ export default {};
       display: inline-block;
       vertical-align: top;
       width: 180px;
+      word-wrap: break-word;
     }
     &-time {
       float: right;

@@ -1,5 +1,5 @@
 /**
- * news模块接口列表
+ * 我的学习模块接口列表
  */
 import axios from './http'; // 导入http中创建的axios实例
 import base from './base'; // 导入接口域名列表

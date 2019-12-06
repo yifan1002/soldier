@@ -9,11 +9,12 @@ const routes = [
 		component: r => require.ensure([], () => r(require('@p/showComponents/showComponents')), 'show')
 	},
 	{
-		path: '/info/:id',
+		path: '/info',
+		name: 'info',
 		component: r => require.ensure([], () => r(require('@p/info/info')), 'info')
 	},
 	{
-		path: '/video/:id',
+		path: '/video',
 		component: r => require.ensure([], () => r(require('@p/video/video')), 'video')
 	},
 	{
@@ -31,11 +32,6 @@ const routes = [
 		name: 'articleList',
 		path: '/articleList',
 		component: r => require.ensure([], () => r(require('@p/articleList/articleList')), 'articleList')
-	},
-	{
-		name: 'articleDetail',
-		path: '/articleDetail/:id',
-		component: r => require.ensure([], () => r(require('@p/articleDetail/articleDetail')), 'articleDetail')
 	},
 	{
 		path: '/mine',
@@ -71,6 +67,7 @@ let vueRouter;
 // 开发环境,vue-router采用hash模式,其他环境使用history模式
 if (process.env.VUE_APP_CURRENTMODE == 'dev') {
 	vueRouter =  new VueRouter({
+		mode: 'history',
 		routes
 	});
 } else {

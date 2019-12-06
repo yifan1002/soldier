@@ -11,9 +11,12 @@
       <h1 class="info-title">{{infoClass.name}}</h1>
       <p class="info-msg">
         浏览：{{infoClass.viewNum}}万
-        <!-- <span>|</span>发布时间：{{infoClass.createTime|formatDate('yyyy-MM-dd')}} -->
         <span>|</span>
-        <span v-text="infoClass.editor?'来源：'+infoClass.editor:'来源：未知'"></span>
+        <span v-if="infoClass.createTime">
+        发布时间：{{infoClass.createTime | formatDate('yyyy-MM-dd')}}
+        </span>
+        <span>|</span>
+        来源：<span v-text="infoClass.editor?+infoClass.editor:'未知'"></span>
         <span>|</span>
         课程分类：{{infoClass.sortName}}
       </p>
@@ -48,19 +51,6 @@ export default {
     };
   },
   methods: {
-    // fn() {
-    //   this.$api.collectVod
-    //     .collectVod({
-    //       collect: true,
-    //       id: 1
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
-    // },
     collect() {
       this.$api.info
         .clickCollect({
@@ -93,7 +83,6 @@ export default {
           id: this.infoId
         })
         .then(res => {
-          console.log(res, 123);
           this.isGood = res.data.data.isGood;
           this.isCollect = res.data.data.isCollect;
           this.infoClass = res.data.data.article;
@@ -103,11 +92,25 @@ export default {
           console.log(err);
         });
     }
+    // fn() {
+    //   this.$api.collectVod
+    //     .collectVod({
+    //       collect: true,
+    //       id: 1
+    //     })
+    //     .then(res => {
+    //       console.log(res);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    // },
   },
   created() {
-    var url = this.$route.path;
-    url = url.substring(url.lastIndexOf("/"), url.length);
-    this.infoId = url.slice(1);
+    // var url = this.$route.path;
+    // url = url.substring(url.lastIndexOf("/"), url.length);
+    // this.infoId = url.slice(1);
+		this.infoId = this.$route.query.id;
   },
   mounted() {
     this.getInfo();

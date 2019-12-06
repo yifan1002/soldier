@@ -8,6 +8,8 @@ import recordList from './historyRecordList';
 import collectVod from './collectVod';
 import footer from './footer';
 import info from './info';
+import videoclass from './videoclass';
+
 
 
 export default {
@@ -20,5 +22,6 @@ export default {
 	recordList,
 	collectVod,
 	footer,
-	info
+	info,
+	videoclass
 }
