@@ -1,12 +1,14 @@
 <template>
   <div>
-    <div class="outter-box" style="background:#000;">
+    <div class="outter-box" style="background:#000;padding-bottom:50px;">
       <div class="inner-box clearfix">
         <h1 class="title">
           <i class="badge bg-myblue">{{videoDetail.sortName}}</i>
           {{videoDetail.vodName}}
         </h1>
-        <div class="video-part"></div>
+        <div>
+          <video class="video-part" :src="videourl" controls ref="video"></video>
+        </div>
         <!-- 外层盒子 -->
         <div class="video-list">
           <div class="video-list-btn clearfix">
@@ -15,15 +17,19 @@
           <happy-scroll color="#999" size="3" resize>
             <!-- 内层盒子——内容区 -->
             <div class="video-list-content">
-              <router-link
-                :to="{path:'/video/'+item.id}"
+              <a
+                @click="playVideo($event)"
+                href="javascript:;"
                 v-for="(item,index) in videoList"
                 :key="index"
+                :data-id="index"
+                :data-src="'http://file.dev.exstudy.com/'+item.filePath"
+                :class="activeNum==index?'activeA':true"
               >
                 <span class="video-item-num">{{"0"+(index+1)}}</span>
                 <span class="video-item-title">{{item.fileName}}</span>
                 <span class="video-item-time">{{item.videoDurationStr}}</span>
-              </router-link>
+              </a>
             </div>
           </happy-scroll>
         </div>
@@ -50,23 +56,31 @@ export default {
   data() {
     return {
       videoDetail: {},
-      videoList: []
+      videoList: [],
+      videoSrc: "",
+      activeNum: 0,
+      baseurl: "http:///file.dev.exstudy.com/",
+      videourl:""
     };
   },
   created() {
     this.getVodDetail();
   },
   methods: {
+    playVideo(e) {
+      this.activeNum = e.currentTarget.dataset.id;
+      this.$refs.video.src = e.currentTarget.dataset.src;
+    },
     getVodDetail() {
-      var id=this.$route.query.id;
+      var id = this.$route.query.id;
       this.$api.videoclass
         .vodDetail({
           id: id
         })
         .then(res => {
           this.videoDetail = res.data.data;
-          console.log(this.videoDetail);
           this.videoList = res.data.data.vodVideoList;
+          this.videourl=this.baseurl+this.videoList[0].filePath;
         })
         .catch(err => {
           console.log(err);
@@ -77,6 +91,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.activeA {
+  color: #0090f5 !important;
+  background: #1e1e1e;
+}
 .title {
   color: #d7d4d7;
   font-size: 22px;
@@ -89,7 +107,6 @@ export default {
 .video {
   &-part {
     float: left;
-    background: #6e97e2;
     width: 910px;
     height: 560px;
   }
@@ -111,9 +128,9 @@ export default {
       width: 1000px;
       margin: 0 auto;
     }
-    height: 500px;
     border: 1px solid #e4e4e4;
     margin-top: 20px;
+    padding-bottom: 30px;
     p {
       color: #333;
       line-height: 32px;
@@ -162,7 +179,7 @@ export default {
         color: #999;
         font-size: 16px;
         line-height: 24px;
-        margin: 20px 0;
+        padding: 10px 0;
         padding-right: 5px;
         box-sizing: border-box;
       }

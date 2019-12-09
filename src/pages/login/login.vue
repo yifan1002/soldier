@@ -34,11 +34,6 @@
 		computed: {
 			...mapState(['token'])
 		},
-		created: function() {
-			localStorage.removeItem('token');
-			this.changeToken('');
-			this.loginSuccess(false);
-		},
 		methods: {
 			login() {
 				this.$api.login.login({

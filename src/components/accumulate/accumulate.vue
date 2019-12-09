@@ -45,7 +45,7 @@
           ></el-date-picker>
         </div>
       </div>
-      <div class="clearfix">
+      <div class="clearfix" style="margin-bottom:20px;">
         <tableA :pointList="pointList"></tableA>
       </div>
     </div>
@@ -187,7 +187,7 @@ export default {
 
 <style scoped lang="scss">
 .mine-study-box {
-  min-height: 800px;
+  min-height: 500px;
 }
 .pagination {
   text-align: center;

@@ -5,7 +5,7 @@
 				<span>欢迎登录系统!</span>
 				<router-link to="login" class="header-top-right header-border-right">
 					<i class="logout"></i>
-					<span>退出系统</span>
+					<span @click="logout">退出系统</span>
 				</router-link>
 				<a class="header-top-right" href="javaScript:;">
 					<i class="root"></i>
@@ -150,7 +150,20 @@
 			...mapState(['menuCurrent', 'subMenuCurrent'])
 		},
 		methods: {
-			...mapMutations(['changeMenu', 'changeSubMenu'])
+			...mapMutations(['changeMenu', 'changeSubMenu', 'changeToken', 'loginSuccess']),
+			logout() {
+				this.$api.login.logout({})
+					.then(res => {
+						console.log(res);
+						// 登出成功,清除token
+						localStorage.removeItem('token');
+						this.changeToken('');
+						this.loginSuccess(false);
+					})
+					.catch(err => {
+						console.log(err);
+					});
+			},
 		}
 	};
 </script>

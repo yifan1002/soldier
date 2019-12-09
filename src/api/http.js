@@ -50,7 +50,7 @@ const errorHandle = (status, other) => {
 			store.commit('loginSuccess', false);
 			setTimeout(() => {
 				toLogin();
-			}, 1000);
+			}, 0);
 			break;
 			// 5002 用户不存在或账号密码错误
 		case 5002:

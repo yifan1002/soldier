@@ -1,5 +1,5 @@
 <template>
-  <div class="mine-video" :class="size">
+  <div @click="fn" class="mine-video" :class="size">
     <div class="mine-video-img">
       <!-- <img src="../../../src/assets/img/class2.png" alt /> -->
       <img
@@ -8,7 +8,7 @@
       />
     </div>
     <div class="mine-video-title">
-      <router-link
+      <router-link ref="videodetail"
         :to="{path:'video?id='+vodList.vodId}"
         target="_blank"
         v-text="vodList.vodName?vodList.vodName:'已删除'"
@@ -36,7 +36,11 @@ export default {
       default: ""
     }
   },
-  created() {}
+  methods:{
+    fn(){
+      this.$refs.videodetail.$el.click()
+    }
+  }
 };
 </script>
 

@@ -44,7 +44,7 @@ export default {
   margin:0 0 100px 20px;
   border: 1px solid #e4e4e4;
   width: 990px;
-  min-height: 800px;
+  min-height: 500px;
   padding: 30px;
 }
 </style>

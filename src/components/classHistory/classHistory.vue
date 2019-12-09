@@ -175,6 +175,6 @@ export default {
   margin-right: -20px;
 }
 .page-inner {
-  min-height: 650px;
+  min-height: 450px;
 }
 </style>

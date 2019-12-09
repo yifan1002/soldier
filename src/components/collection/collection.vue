@@ -2,7 +2,7 @@
   <div>
     <el-tabs v-model="activeName" class="mytab" @tab-click="handleClick">
       <el-tab-pane label="文章" name="first">
-        <div style="min-height:650px;">
+        <div style="min-height:350px;">
           <router-link
             v-for="item in articleList"
             :key="item.id"
@@ -27,7 +27,7 @@
         </div>
       </el-tab-pane>
       <el-tab-pane label="视频课" name="second">
-        <div style="min-height:650px;">
+        <div style="min-height:350px;">
           <mineVideoCard
             v-for="(item,index) in vodList"
             :key="item.id"

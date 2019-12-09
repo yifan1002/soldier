@@ -41,7 +41,8 @@ export default {
 <style scoped lang="scss">
 .no-content{
   text-align: center;
-  margin-top:100px; 
+  margin-top:150px;
+  margin-bottom: 150px; 
    p{
     color: #aaa;
     margin-top: 10px  ;

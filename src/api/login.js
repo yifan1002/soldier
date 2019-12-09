@@ -9,6 +9,9 @@ const login = {
 	// login登录 
 	login(params) {
 		return axios.post(`${base.url}/login`, qs.stringify(params));
+	},
+	logout(params) {
+		return axios.get(`${base.url}/logout`, {params});
 	}
 	// 其他接口…………
 }
