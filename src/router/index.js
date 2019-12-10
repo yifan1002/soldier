@@ -1,8 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
 
-// import college from '@p/college/college';
-
 const routes = [
 	{
 		path: '/show',
@@ -62,19 +60,20 @@ const routes = [
 ]
 
 Vue.use(VueRouter);
-let vueRouter;
+let router;
 
 // 开发环境,vue-router采用hash模式,其他环境使用history模式
 if (process.env.VUE_APP_CURRENTMODE == 'dev') {
-	vueRouter =  new VueRouter({
+	router =  new VueRouter({
 		mode: 'history',
 		routes
 	});
 } else {
-	vueRouter = new VueRouter({
+	router = new VueRouter({
 		mode: 'history',
 		routes
 	});
 }
 
-export default vueRouter
+
+export default router

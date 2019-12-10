@@ -28,7 +28,7 @@
 			return {
 				loginName: 'zhangbj',
 				loginPassword: 'e10adc3949ba59abbe56e057f20f883e',
-				time: '1501001991000'
+				time: new Date().getTime()
 			}
 		},
 		computed: {

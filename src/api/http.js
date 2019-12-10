@@ -32,6 +32,8 @@ const toLogin = () => {
 			redirect: router.currentRoute.fullPath
 		}
 	});
+	localStorage.removeItem('token');
+	store.commit('changeToken', '');
 	store.commit('loginSuccess', false);
 }
 
@@ -80,7 +82,7 @@ const errorHandle = (status, other) => {
 
 // 创建axios实例
 var instance = axios.create({
-	timeout: 1000 * 12
+	timeout: 1000 * 1
 });
 // 设置post请求头
 instance.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
