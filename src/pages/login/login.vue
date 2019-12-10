@@ -17,11 +17,6 @@
 </template>
 
 <script>
-	import {
-		mapState,
-		mapMutations
-	} from 'vuex';
-	
 	export default {
 		name: 'login',
 		data() {
@@ -30,9 +25,6 @@
 				loginPassword: 'e10adc3949ba59abbe56e057f20f883e',
 				time: new Date().getTime()
 			}
-		},
-		computed: {
-			...mapState(['token'])
 		},
 		methods: {
 			login() {
@@ -50,14 +42,11 @@
 						console.log(res.data.data.token)
 						const token = `Bearer ${res.data.data.token}`;
 						localStorage.setItem('token', token);
-						this.changeToken(token); // 使用mapMutations简化代码
-						this.loginSuccess(true);
 					})
 					.catch(err => {
 						console.log(err);
 					});
 			},
-			...mapMutations(['changeToken', 'loginSuccess'])
 		}
 	}
 </script>

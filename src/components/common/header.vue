@@ -150,15 +150,13 @@
 			...mapState(['menuCurrent', 'subMenuCurrent'])
 		},
 		methods: {
-			...mapMutations(['changeMenu', 'changeSubMenu', 'changeToken', 'loginSuccess']),
+			...mapMutations(['changeMenu', 'changeSubMenu']),
 			logout() {
 				this.$api.login.logout({})
 					.then(res => {
 						console.log(res);
 						// 登出成功,清除token
 						localStorage.removeItem('token');
-						this.changeToken('');
-						this.loginSuccess(false);
 					})
 					.catch(err => {
 						console.log(err);
