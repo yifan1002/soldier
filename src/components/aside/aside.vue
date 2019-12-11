@@ -48,7 +48,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "../../var.scss";
 .tab-mine {
   float: left;
   box-sizing: border-box;

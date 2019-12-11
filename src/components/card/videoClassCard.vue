@@ -24,7 +24,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import  '../../var.scss';
 .card-video {
   box-sizing: border-box;
   display: inline-block;

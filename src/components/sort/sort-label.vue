@@ -38,8 +38,6 @@
 </script>
 
 <style lang="scss">
-	@import './src/var.scss';
-	
 	.sort-label {
 		float: left;
 		display: inline-block;

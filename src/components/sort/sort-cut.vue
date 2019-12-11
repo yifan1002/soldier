@@ -36,8 +36,6 @@
 </script>
 
 <style lang="scss">
-	@import './src/var.scss';
-	
 	.sort-cut {
 		float: right;
 		display: inline-block;

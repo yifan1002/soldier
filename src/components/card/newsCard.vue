@@ -16,8 +16,6 @@
 </script>
 
 <style lang="scss" scoped>
-	@import '../../var.scss';
-
 	.card {
 		width: 240px;
 		height: 165px;

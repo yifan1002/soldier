@@ -45,8 +45,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../var.scss";
-
 .mine-video {
   box-sizing: border-box;
   display: inline-block;

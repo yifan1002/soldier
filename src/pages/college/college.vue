@@ -144,8 +144,6 @@
 </script>
 
 <style lang="scss">
-	@import "./src/var.scss";
-
 	.el-carousel__item {
 		position: absolute !important;
 	}

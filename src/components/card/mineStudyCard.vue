@@ -113,7 +113,6 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
-@import "../../var.scss";
 .card-box {
   float: left;
   margin-right: 20px;

@@ -39,8 +39,6 @@
 </script>
 
 <style lang="scss">
-	@import './src/var.scss';
-	
 	.sort {
 		height: 48px;
 		background-color: #fff;

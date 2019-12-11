@@ -105,8 +105,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import "./src/var.scss";
-
 .content {
   padding: 20px 0 30px;
 }
