@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <Header></Header>
+    <Header v-if='!this.$route.meta.onlyPage'></Header>
     <router-view></router-view>
-    <Footer class="footer"></Footer>
+    <Footer class="footer" v-if='!this.$route.meta.onlyPage'></Footer>
   </div>
 </template>
 

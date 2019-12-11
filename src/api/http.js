@@ -8,30 +8,100 @@ import store from '@/store';
 import base from './base';
 import { Message } from 'element-ui';
 
+// 为了实现Class的私有属性
+const showMessage = Symbol('showMessage');
+/** 
+ *  重写ElementUI的Message
+ *  single默认值true，因为项目需求，默认只弹出一个，可以根据实际需要设置
+ */
+class DonMessage {
+	success(options, single = true) {
+		this[showMessage]('success', options, single)
+	}
+	warning(options, single = true) {
+		this[showMessage]('warning', options, single)
+	}
+	info(options, single = true) {
+		this[showMessage]('info', options, single)
+	}
+	error(options, single = true) {
+		this[showMessage]('error', options, single)
+	}
+
+	[showMessage](type, options, single) {
+		if (single) {
+			// 判断是否已存在Message
+			if (document.getElementsByClassName('el-message').length === 0) {
+				Message[type](options)
+			}
+		} else {
+			Message[type](options)
+		}
+	}
+}
+
 /** 
  * 提示函数 
  * 禁止点击蒙层、显示一秒后关闭
  */
 const tip = msg => {
-	Message.error({
+	new DonMessage().error({
 		message: msg,
 		duration: 1000
 	});
 }
 
 /** 
+ * 前置导航守卫 
+ * 拦截直接进入需要登录的页面
+ */
+router.beforeEach((to, from, next) => {
+	if (to.meta.needLogin) { // 判断跳转的路由是否需要登录
+		if (localStorage.getItem('token')) {
+			next() //直接进入对应的路由
+		} else {
+			sessionStorage.setItem('url', to.path)
+			tip('用户未授权或授权过期，请重新登录');
+			next('/login') //当前路由被终止，进入login路由导航
+		}
+	} else {
+		next() //直接进入对应的路由
+	}
+});
+
+/** 
  * 跳转登录页
- * 携带当前页面路由，以期在登录页面完成登录后返回当前页面
+ * 存储当前页面路由，登录完成后返回当前页面
  */
 const toLogin = () => {
-	console.log(router);
+	let url = router.currentRoute.name;
+	if (url !== 'login') {
+		router.replace({
+			name: 'login'
+		});
+		sessionStorage.setItem('url', url);
+		localStorage.removeItem('token');
+	}
+}
+
+/** 
+ * 404页面不存在
+ */
+const toNotFound = () => {
 	router.replace({
-		path: '/login',
-		query: {
-			redirect: router.currentRoute.fullPath
-		}
+		name: 'notFound'
 	});
-	localStorage.removeItem('token');
+}
+
+/** 
+ * 500服务器错误
+ * 存储当前页面路由，刷新或点击按钮重载完成后返回当前页面
+ */
+const toServerError = () => {
+	router.replace({
+		path: 'serverError'
+	});
+	sessionStorage.setItem('url', router.currentRoute.fullPath);
 }
 
 /** 
@@ -44,31 +114,31 @@ const errorHandle = (status, other) => {
 		// 5001 用户未授权或授权过期
 		// 清除token并跳转到登录页
 		case 5001:
-			tip('用户未授权或授权过期');
+			tip('用户未授权或授权过期，请重新登录');
 			localStorage.removeItem('token');
 			setTimeout(() => {
 				toLogin();
-			}, 0);
+			}, 1000);
 			break;
-			// 5002 用户不存在或账号密码错误
+		// 5002 用户不存在或账号密码错误
 		case 5002:
 			tip('用户不存在或账号密码错误');
 			setTimeout(() => {
 				toLogin();
 			}, 1000);
 			break;
-			// 404请求不存在
+		// 404请求不存在
 		case 404:
 			tip('请求的资源不存在');
 			setTimeout(() => {
-				alert('此处跳转到404页面');
+				toNotFound();
 			}, 1000);
 			break;
-			// 500服务器错误
+		// 500服务器错误
 		case 500:
 			tip('服务器错误');
 			setTimeout(() => {
-				alert('此处跳转到500错误页面');
+				toServerError();
 			}, 1000);
 			break;
 		default:
@@ -131,7 +201,7 @@ instance.interceptors.response.use(
 			errorHandle(response.status, response.statusText);
 			return Promise.reject(response);
 		} else {
-			
+
 			// 处理请求失败，重新请求的情况
 			if (base.retry === true) {
 				// 请求超时，抛出error.code= ECONNABORTED的错误,错误信息:timeout of xxx ms exceeded
@@ -140,32 +210,32 @@ instance.interceptors.response.use(
 					// console.log('config:', config);
 					// console.log('retry:', config.retry);
 					config.__retryCount = config.__retryCount || 0;
-				
+
 					if (config.__retryCount >= config.retry) {
 						// Reject with the error
 						// window.location.reload();
 						return Promise.reject(error);
 					}
-					
+
 					// Increase the retry count
 					config.__retryCount += 1;
 					// console.log('__retryCount:', config.__retryCount);
-					
+
 					// Create new promise to handle exponential backoff
-					let backoff = new Promise(function(resolve) {
+					let backoff = new Promise(function (resolve) {
 						console.log(`接口：${config.url}，请求超时，重新请求`);
-						setTimeout(function() {
+						setTimeout(function () {
 							// console.log('resolve');
 							resolve();
 						}, config.retryDelay || 1);
 					});
-					
-					return backoff.then(function() {
+
+					return backoff.then(function () {
 						return instance(config);
 					});
 				}
 			}
-			
+
 			// 处理断网的情况
 			// 断网时，更新state的network状态
 			// network状态在app.vue中控制着一个全局的断网提示组件的显示隐藏
@@ -175,7 +245,7 @@ instance.interceptors.response.use(
 			} else {
 				return Promise.reject(error);
 			}
-			
+
 		}
 	}
 );

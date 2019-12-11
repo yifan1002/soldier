@@ -2,10 +2,14 @@
 	<div class="header">
 		<div class="outer-box bg-gray">
 			<div class="inner-box header-top">
-				<span>欢迎登录系统!</span>
-				<router-link to="login" class="header-top-right header-border-right">
+				<span>欢迎登录系统!{{loginSuccess}}</span>
+				<a href="#" class="header-top-right header-border-right" @click.prevent="logout" v-if="loginSuccess">
 					<i class="logout"></i>
-					<span @click="logout">退出系统</span>
+					<span>退出系统</span>
+				</a>
+				<router-link to="/login" class="header-top-right header-border-right" v-else>
+					<i class="logout"></i>
+					<span>登录系统</span>
 				</router-link>
 				<a class="header-top-right" href="javaScript:;">
 					<i class="root"></i>
@@ -66,6 +70,7 @@
 		name: "Header",
 		data() {
 			return {
+				loginSuccess: false,
 				inputValue: "",
 				select: "",
 				menus: [
@@ -146,6 +151,15 @@
 				]
 			};
 		},
+		created() {
+			if (localStorage.getItem('token')) {
+				this.loginSuccess = true;
+			}
+			// 通过bus获取登录状态
+			this.$root.$on('sendLoginState', value => {
+				this.loginSuccess = value;
+			});
+		},
 		computed: {
 			...mapState(['menuCurrent', 'subMenuCurrent'])
 		},
@@ -155,8 +169,15 @@
 				this.$api.login.logout({})
 					.then(res => {
 						console.log(res);
-						// 登出成功,清除token
+						// 登出成功，清除token
 						localStorage.removeItem('token');
+						sessionStorage.setItem('url', '/mine');
+						this.loginSuccess = false;
+						// 跳转到登录页
+						console.log(this.$router);
+						this.$router.push({
+							name: 'login',
+						});
 					})
 					.catch(err => {
 						console.log(err);

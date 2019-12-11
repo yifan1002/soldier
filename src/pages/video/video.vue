@@ -78,6 +78,7 @@ export default {
           id: id
         })
         .then(res => {
+          console.log(res)
           this.videoDetail = res.data.data;
           this.videoList = res.data.data.vodVideoList;
           this.videourl=this.baseurl+this.videoList[0].filePath;

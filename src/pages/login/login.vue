@@ -1,18 +1,16 @@
 <template>
 	<div class="login">
-		<p>
-			<label for="loginName">用户名：</label>
-			<input type="text" name="loginName" v-model="loginName">
-		</p>
-		<p>
-			<label for="loginPassword">密码：</label>
-			<input type="password" name="loginPassword" v-model="loginPassword">
-		</p>
-		<p>
-			<label for=""></label>
-			<button @click="login">登录：{{time | formatDate}}</button>
-		</p>
-
+		<el-form ref="form" label-width="80px">
+			<el-form-item label="用户名">
+				<el-input v-model="loginName"></el-input>
+			</el-form-item>
+			<el-form-item label="密码">
+				<el-input type="password" v-model="loginPassword"></el-input>
+			</el-form-item>
+			<el-form-item>
+				<el-button type="primary" @click="login">登录：{{time | formatDate}}</el-button>
+			</el-form-item>
+		</el-form>
 	</div>
 </template>
 
@@ -22,7 +20,7 @@
 		data() {
 			return {
 				loginName: 'zhangbj',
-				loginPassword: 'e10adc3949ba59abbe56e057f20f883e',
+				loginPassword: '',
 				time: new Date().getTime()
 			}
 		},
@@ -30,23 +28,27 @@
 			login() {
 				this.$api.login.login({
 						loginName: this.loginName,
-						loginPassword: this.loginPassword
+						loginPassword: this.$md5(this.loginPassword)
 					})
 					.then(res => {
-						console.log(res);
-						// 登录成功，跳转到内部页面
-						this.$router.push({
-							path: '/mine'
-						});
-						// 登录成功,存储token
-						console.log(res.data.data.token)
+						// console.log(res);
+						// 登录成功，存储token
+						// console.log(res.data.data.token)
 						const token = `Bearer ${res.data.data.token}`;
 						localStorage.setItem('token', token);
+						// 登录成功，将登录状态传递给header组件
+						this.$root.$emit('sendLoginState', true);
+						// 登录成功，跳转到内部页面
+						let url = sessionStorage.getItem('url');
+						if (!url) url = '/mine';
+						this.$router.push({
+							path: url
+						});
 					})
 					.catch(err => {
 						console.log(err);
 					});
-			},
+			}
 		}
 	}
 </script>

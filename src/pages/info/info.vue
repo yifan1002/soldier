@@ -88,8 +88,10 @@ export default {
           this.infoClass = res.data.data.article;
           this.$refs.infoContent.innerHTML = this.infoClass.contentFile;
         })
-        .catch(err => {
-          console.log(err);
+        .catch(err => {        
+          if(err.data.code){
+            this.$router.push('/accumulatePoints')
+          }
         });
     }
     // fn() {
