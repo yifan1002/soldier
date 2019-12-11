@@ -52,11 +52,17 @@ const tip = msg => {
 }
 
 /** 
- * 前置导航守卫 
+ * 前置导航守卫
+ * 设置网页标题
  * 拦截直接进入需要登录的页面
  */
 router.beforeEach((to, from, next) => {
-	if (to.meta.needLogin) { // 判断跳转的路由是否需要登录
+	// 判断是否有标题
+	if (to.meta.title) {
+		document.title = to.meta.title;
+	}
+	// 判断跳转的路由是否需要登录
+	if (to.meta.needLogin) {
 		if (localStorage.getItem('token')) {
 			next() //直接进入对应的路由
 		} else {
@@ -74,8 +80,8 @@ router.beforeEach((to, from, next) => {
  * 存储当前页面路由，登录完成后返回当前页面
  */
 const toLogin = () => {
-	let url = router.currentRoute.name;
-	if (url !== 'login') {
+	let url = router.currentRoute.fullPath;
+	if (url !== '/login') {
 		router.replace({
 			name: 'login'
 		});
@@ -98,10 +104,11 @@ const toNotFound = () => {
  * 存储当前页面路由，刷新或点击按钮重载完成后返回当前页面
  */
 const toServerError = () => {
+	let url = router.currentRoute.fullPath;
 	router.replace({
 		path: 'serverError'
 	});
-	sessionStorage.setItem('url', router.currentRoute.fullPath);
+	sessionStorage.setItem('url', url);
 }
 
 /** 

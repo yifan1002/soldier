@@ -66,6 +66,9 @@ export default {
   created() {
     this.getVodDetail();
   },
+	updated() {
+		document.title = `${this.videoDetail.vodName} - 视频播放 - 教育培训`
+	},
   methods: {
     playVideo(e) {
       this.activeNum = e.currentTarget.dataset.id;

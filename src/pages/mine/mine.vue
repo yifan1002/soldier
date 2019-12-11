@@ -4,7 +4,13 @@
       <div class="inner-box mine">
         <Aside></Aside>
         <div class="main-mine">
-          <router-view></router-view>
+					<transition
+						mode="out-in"
+						enter-active-class="animated animatedFast fadeInRight"
+						leave-active-class="animated fadeOut"
+					>
+						<router-view></router-view>
+					</transition>
         </div>
       </div>
     </div>

@@ -5,16 +5,20 @@ import router from '@/router';
 import store from "@/store";
 import api from '@/api';
 import '@/plugins/element.js';
+import '@/v-animate.scss';
+
 import { HappyScroll } from 'vue-happy-scroll'
 //自定义组件名
 Vue.component('happy-scroll', HappyScroll)
 // 引入css
 import 'vue-happy-scroll/docs/happy-scroll.css'
+
 // 引入全局过滤器
 import * as filters from '@u/filters';
 Object.keys(filters).forEach(key => {
   Vue.filter(key, filters[key])
 });
+
 
 
 Vue.config.productionTip = false

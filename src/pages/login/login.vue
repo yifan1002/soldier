@@ -5,7 +5,7 @@
 				<el-input v-model="loginName"></el-input>
 			</el-form-item>
 			<el-form-item label="密码">
-				<el-input type="password" v-model="loginPassword"></el-input>
+				<el-input type="password" v-model="loginPassword" @keyup.enter.native="login"></el-input>
 			</el-form-item>
 			<el-form-item>
 				<el-button type="primary" @click="login">登录：{{time | formatDate}}</el-button>
@@ -20,7 +20,7 @@
 		data() {
 			return {
 				loginName: 'zhangbj',
-				loginPassword: '',
+				loginPassword: '123456',
 				time: new Date().getTime()
 			}
 		},

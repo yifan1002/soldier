@@ -22,18 +22,22 @@ const routes = [
 		name: 'login',
 		path: '/login',
 		component: r => require.ensure([], () => r(require('@p/login/login')), 'login'),
+		meta: {
+			title: '登录'
+		},
 		// 路由守卫,进入登录页清除token
 		beforeEnter: (to, from, next) => {
 			localStorage.removeItem('token');
-			console.log(to, from);
 			next();
 		}
 	},
 	{
 		name: 'college',
 		path: '/college',
-		component: r => require.ensure([], () => r(require('@p/college/college')), 'college')
-		
+		component: r => require.ensure([], () => r(require('@p/college/college')), 'college'),
+		meta: {
+			title: '网络学院'
+		}
 	},
 	{
 		name: 'articleList',
@@ -44,7 +48,8 @@ const routes = [
 		path: '/mine',
 		component: r => require.ensure([], () => r(require('@p/mine/mine')), 'mine'),
 		meta: {
-			needLogin: true //需要登录
+			needLogin: true, //需要登录
+			title: '我的学习'
 		},
 		children: [
 			{
@@ -52,7 +57,8 @@ const routes = [
 				path: '/mine',
 				component: r => require.ensure([], () => r(require('@c/mineStudy/mineStudy')), 'mineStudy'),
 				meta: {
-					needLogin: true
+					needLogin: true,
+					title: '我的学习'
 				}
 			},
 			{
@@ -60,7 +66,8 @@ const routes = [
 				name: 'mainStudy',
 				component: r => require.ensure([], () => r(require('@c/classHistory/classHistory')), 'classHistory'),
 				meta: {
-					needLogin: true
+					needLogin: true,
+					title: '学习记录 - 我的学习'
 				}
 			},
 			{
@@ -68,7 +75,8 @@ const routes = [
 				path: '/collection',
 				component: r => require.ensure([], () => r(require('@c/collection/collection')), 'collection'),
 				meta: {
-					needLogin: true
+					needLogin: true,
+					title: '我的收藏 - 我的学习'
 				}
 			},
 			{
@@ -76,7 +84,8 @@ const routes = [
 				path: '/accumulatePoints',
 				component: r => require.ensure([], () => r(require('@c/accumulate/accumulate')), 'accumulate'),
 				meta: {
-					needLogin: true
+					needLogin: true,
+					title: '积分明细 - 我的学习'
 				}
 			}
 		]

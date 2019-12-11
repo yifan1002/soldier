@@ -1,7 +1,13 @@
 <template>
   <div id="app">
     <Header v-if='!this.$route.meta.onlyPage'></Header>
-    <router-view></router-view>
+		<transition
+			mode="out-in"
+			enter-active-class="animated bounceInLeft"
+			leave-active-class="animated bounceOutRight"
+		>
+			<router-view></router-view>
+		</transition>
     <Footer class="footer" v-if='!this.$route.meta.onlyPage'></Footer>
   </div>
 </template>
@@ -23,6 +29,7 @@ export default {
 body,
 html {
   height: 100%;
+	overflow-x: hidden;
 }
 .footer {
   position: absolute;

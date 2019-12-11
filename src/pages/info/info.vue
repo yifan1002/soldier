@@ -83,7 +83,8 @@ export default {
           id: this.infoId
         })
         .then(res => {
-          this.isGood = res.data.data.isGood;
+          console.log(res);
+					this.isGood = res.data.data.isGood;
           this.isCollect = res.data.data.isCollect;
           this.infoClass = res.data.data.article;
           this.$refs.infoContent.innerHTML = this.infoClass.contentFile;
@@ -116,7 +117,10 @@ export default {
   },
   mounted() {
     this.getInfo();
-  }
+  },
+	updated() {
+		document.title = `${this.infoClass.name} - 资讯课程 - 教育培训`
+	}
 };
 </script>
 
