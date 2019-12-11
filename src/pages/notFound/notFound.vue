@@ -23,6 +23,8 @@
 				this.$router.push({
 					path: '/'
 				});
+				sessionStorage.removeItem('menuCurrent');
+				sessionStorage.removeItem('subMenuCurrent');
 			}
 		},
 		components: {

@@ -21,7 +21,7 @@
 			<div class="inner-box">
 				<div class="header-middle">
 					<div class="header-middle-left">
-						<img class="header-middle-logo" src="../../../src/assets/img/logo.png" alt />
+						<img class="header-middle-logo" src="~@a/img/logo.png" alt />
 						<span class="header-middle-title">全国退役军人就业创业服务</span>
 					</div>
 					<div class="header-middle-right" style="float:right;">
@@ -40,7 +40,7 @@
 		<div class="outer-box header-nav">
 			<div class="inner-box">
 				<ul class="header-nav-list">
-					<li v-for="(item, index) in menus" :key="index" @click="changeMenu(item.url)" :class="(menuCurrent === item.url && item.url !== 'javascript:;') ? 'actived' : ''">
+					<li v-for="(item, index) in menus" :key="index" @click="saveMenu(item.url)" :class="(menuCurrent === item.url && item.url !== 'javascript:;') ? 'actived' : ''">
 						<router-link v-if="item.url === 'home'" class="home" :to="item.url">
 							{{ item.title }}
 						</router-link>
@@ -51,7 +51,7 @@
 							{{ item.title }}
 						</router-link>
 						<ul v-if="item.subMenus" class="header-nav-sub">
-							<li v-for="(subItem, subIndex) in item.subMenus" :key="subIndex" @click="changeSubMenu(subItem.url)" :class="(subMenuCurrent === subItem.url && subItem.url !== 'javascript:;') ? 'actived' : ''">
+							<li v-for="(subItem, subIndex) in item.subMenus" :key="subIndex" @click.stop="saveSubMenu(item.url, subItem.url)" :class="(subMenuCurrent === subItem.url && subItem.url !== 'javascript:;') ? 'actived' : ''">
 								<router-link :to="subItem.url">
 									{{ subItem.title }}
 								</router-link>
@@ -65,11 +65,12 @@
 </template>
 
 <script>
-	import { mapState, mapMutations } from 'vuex';
 	export default {
 		name: "Header",
 		data() {
 			return {
+				menuCurrent: '',
+				subMenuCurrent: '',
 				loginSuccess: false,
 				inputValue: "",
 				select: "",
@@ -159,12 +160,25 @@
 			this.$root.$on('sendLoginState', value => {
 				this.loginSuccess = value;
 			});
+			// 判断是否存在导航选中状态，如果不存在，选中首页相关栏目
+			this.menuCurrent = sessionStorage.getItem('menuCurrent') ? sessionStorage.getItem('menuCurrent') : '/training';
+			this.subMenuCurrent = sessionStorage.getItem('subMenuCurrent') ? sessionStorage.getItem('subMenuCurrent') : '/college';
 		},
-		computed: {
-			...mapState(['menuCurrent', 'subMenuCurrent'])
+		updated() {
+			
 		},
 		methods: {
-			...mapMutations(['changeMenu', 'changeSubMenu']),
+			// 存储选中栏目
+			saveMenu(menu) {
+				sessionStorage.setItem('menuCurrent', menu);
+				this.menuCurrent = menu;
+			},
+			saveSubMenu(menu, subMenu) {
+				sessionStorage.setItem('menuCurrent', menu);
+				sessionStorage.setItem('subMenuCurrent', subMenu);
+				this.menuCurrent = menu;
+				this.subMenuCurrent = subMenu;
+			},
 			logout() {
 				this.$api.login.logout({})
 					.then(res => {

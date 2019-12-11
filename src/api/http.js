@@ -64,14 +64,14 @@ router.beforeEach((to, from, next) => {
 	// 判断跳转的路由是否需要登录
 	if (to.meta.needLogin) {
 		if (localStorage.getItem('token')) {
-			next() //直接进入对应的路由
+			next(); //直接进入对应的路由
 		} else {
 			sessionStorage.setItem('url', to.path)
 			tip('用户未授权或授权过期，请重新登录');
-			next('/login') //当前路由被终止，进入login路由导航
+			next('/login'); //当前路由被终止，进入login路由导航
 		}
 	} else {
-		next() //直接进入对应的路由
+		next(); //直接进入对应的路由
 	}
 });
 

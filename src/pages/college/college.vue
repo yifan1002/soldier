@@ -66,12 +66,7 @@
 </template>
 
 <script>
-	import mineVideo from "../../components/card/mineVideoCard";
-	import {
-		mapState,
-		mapMutations
-	} from "vuex";
-
+	import mineVideo from "@c/card/mineVideoCard";
 	export default {
 		data() {
 			return {
@@ -80,22 +75,7 @@
 				articleList: []
 			};
 		},
-		computed: {
-			...mapState(["token"])
-		},
-		methods: {
-			...mapMutations(["changeMenu", "changeSubMenu"]),
-			// info(e) {
-			//   console.log(e);
-			//   let articleid = e.target.dataset.articleid;
-			//   if (!articleid) articleid = e.path[1].dataset.articleid;
-			//   this.$router.push(`/info/${articleid}`);
-			// }
-		},
 		created() {
-			this.changeMenu("training");
-			this.changeSubMenu("college");
-
 			// 获取焦点图
 			this.$api.news
 				.homePictures({})
@@ -262,7 +242,7 @@
 		&__arrow {
 			width: 46px !important;
 			height: 60px !important;
-			background: url(../../assets/img/left.png) no-repeat transparent;
+			background: url(~@a/img/left.png) no-repeat transparent;
 			border-radius: 0 !important;
 
 			i {
@@ -270,7 +250,7 @@
 			}
 
 			&--right {
-				background-image: url(../../assets/img/right.png);
+				background-image: url(~@a/img/right.png);
 			}
 		}
 	}

@@ -15,7 +15,7 @@
 <script>
 	import Header from "@c/common/header";
 	import Footer from "@c/common/footer";
-	import "#/css/normalize.css";
+	import "@a/css/normalize.css";
 
 	export default {
 		name: "app",

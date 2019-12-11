@@ -5,7 +5,7 @@ import router from '@/router';
 import store from "@/store";
 import api from '@/api';
 import '@/plugins/element.js';
-import '#/scss/v-animate.scss';
+import '@a/scss/v-animate.scss';
 
 import { HappyScroll } from 'vue-happy-scroll'
 //自定义组件名

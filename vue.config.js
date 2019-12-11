@@ -28,7 +28,7 @@ module.exports = {
 	chainWebpack: (config) => {
 		config.resolve.alias
 			.set('@', resolve('src')) // 根路径
-			.set('#', resolve('src/assets')) // 静态资源
+			.set('@a', resolve('src/assets')) // 静态资源
 			.set('@c', resolve('src/components')) // 组件
 			.set('@p', resolve('src/pages')) // 页面
 			.set('@u', resolve('src/utils')) // 公共模块
@@ -38,7 +38,7 @@ module.exports = {
 	css: {
 		loaderOptions: {
 			scss: {
-				prependData: `@import "#/scss/var.scss";`
+				prependData: `@import "@a/scss/var.scss";`
 			}
 		}
 	}
