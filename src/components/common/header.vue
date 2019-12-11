@@ -161,11 +161,18 @@
 				this.loginSuccess = value;
 			});
 			// 判断是否存在导航选中状态，如果不存在，选中首页相关栏目
+			// this.subMenuCurrent = (this.$route.path != '/') ? this.$route.path : '/college';
 			this.menuCurrent = sessionStorage.getItem('menuCurrent') ? sessionStorage.getItem('menuCurrent') : '/training';
 			this.subMenuCurrent = sessionStorage.getItem('subMenuCurrent') ? sessionStorage.getItem('subMenuCurrent') : '/college';
 		},
-		updated() {
-			
+		watch: {
+			// $route(to, from) {
+			// 	// console.log(window.location.href);
+			// 	// console.log(this.$route.path);
+			// 	// console.log(this.$route.params);
+			// 	console.log(to, from);
+			// 	this.subMenuCurrent = (this.$route.path != '/') ? this.$route.path : '/college';
+			// }
 		},
 		methods: {
 			// 存储选中栏目
