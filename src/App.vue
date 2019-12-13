@@ -22,6 +22,8 @@
 		components: {
 			Header,
 			Footer
+		},
+		created(){
 		}
 	};
 </script>

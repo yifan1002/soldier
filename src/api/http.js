@@ -5,7 +5,9 @@
 import axios from 'axios';
 import router from '@/router';
 import store from '@/store';
+import bus from '@u/bus';
 import base from './base';
+import qs from 'qs';
 import { Message } from 'element-ui';
 
 // 为了实现Class的私有属性
@@ -120,13 +122,45 @@ const errorHandle = (status, other) => {
 	switch (status) {
 		// 5001 用户未授权或授权过期
 		// 清除token并跳转到登录页
-		case 5001:
-			tip('用户未授权或授权过期，请重新登录');
-			localStorage.removeItem('token');
-			setTimeout(() => {
-				toLogin();
-			}, 1000);
+		case 5001: {
+			let nowTime = new Date().getTime();
+			let saveTime = localStorage.getItem('saveTime');
+			let loginName = localStorage.getItem('loginName');
+			let loginPassword = localStorage.getItem('loginPassword');
+			// 如果存有用户名和密码，并且没有过期，自动登录
+			if (loginName && loginPassword && nowTime <= saveTime) {
+				console.log(1221);
+				axios.post(`${base.url}/login`, qs.stringify({
+					loginName,
+					loginPassword
+				}))
+				.then(res => {
+					console.log(res);
+					// 登录成功，存储token
+					// console.log(res.data.data.token)
+					const token = `Bearer ${res.data.data.token}`;
+					localStorage.setItem('token', token);
+					// 登录成功，将登录状态传递给header组件
+					bus.$emit('sendLoginState', true);
+					// 登录成功，跳转到内部页面
+					let url = sessionStorage.getItem('url');
+					if (!url) url = '/mine/mineStudy';
+					router.replace({
+						path: url
+					});
+				})
+				.catch(err => {
+					console.log(err);
+				});
+			} else{
+				tip('用户未授权或授权过期，请重新登录!');
+				localStorage.removeItem('token');
+				setTimeout(() => {
+					toLogin();
+				}, 1000);
+			}
 			break;
+		}
 		// 5002 用户不存在或账号密码错误
 		case 5002:
 			tip('用户不存在或账号密码错误');

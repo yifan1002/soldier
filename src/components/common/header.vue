@@ -40,18 +40,31 @@
 		<div class="outer-box header-nav">
 			<div class="inner-box">
 				<ul class="header-nav-list">
-					<li v-for="(item, index) in menus" :key="index" @click="saveMenu(item.url)" :class="(menuCurrent === item.url && item.url !== 'javascript:;') ? 'actived' : ''">
-						<router-link v-if="item.url === 'home'" class="home" :to="item.url">
-							{{ item.title }}
-						</router-link>
-						<router-link v-else-if="item.url === 'interspace'" class="interspace" :to="item.url">
-							{{ item.title }}
-						</router-link>
-						<router-link v-else :to="item.url">
-							{{ item.title }}
-						</router-link>
+					<li v-for="(item, index) in menus" :key="index" :class="{'router-link-exact-active': menuCurrent === item.url}">
+						<div v-if="item.subMenus">
+							<span v-if="item.url === '/home'" class="a home" :to="item.url">
+								{{ item.title }}
+							</span>
+							<span v-else-if="item.url === '/mine'" class="a mine" :to="item.url">
+								{{ item.title }}
+							</span>
+							<span v-else :to="item.url" class="a">
+								{{ item.title }}
+							</span>
+						</div>
+						<div v-else>
+							<router-link v-if="item.url === '/home'" class="home" :to="item.url">
+								{{ item.title }}
+							</router-link>
+							<router-link v-else-if="item.url === '/mine'" class="mine" :to="item.url">
+								{{ item.title }}
+							</router-link>
+							<router-link v-else :to="item.url">
+								{{ item.title }}
+							</router-link>
+						</div>
 						<ul v-if="item.subMenus" class="header-nav-sub">
-							<li v-for="(subItem, subIndex) in item.subMenus" :key="subIndex" @click.stop="saveSubMenu(item.url, subItem.url)" :class="(subMenuCurrent === subItem.url && subItem.url !== 'javascript:;') ? 'actived' : ''">
+							<li v-for="(subItem, subIndex) in item.subMenus" :key="subIndex" :ref="subItem.url" @click.stop="saveMenu(item.url)">
 								<router-link :to="subItem.url">
 									{{ subItem.title }}
 								</router-link>
@@ -65,12 +78,12 @@
 </template>
 
 <script>
+	import bus from '@u/bus';
 	export default {
 		name: "Header",
 		data() {
 			return {
-				menuCurrent: '',
-				subMenuCurrent: '',
+				menuCurrent: '/training',
 				loginSuccess: false,
 				inputValue: "",
 				select: "",
@@ -125,27 +138,27 @@
 					},
 					{
 						title: '我的空间',
-						url: '/interspace',
+						url: '/mine',
 						subMenus: [
 							{
 								title: '个人信息',
-								url: '/userInfo'
+								url: '/mine/userInfo'
 							},
 							{
 								title: '我的积分',
-								url: '/accumulatePoints'
+								url: '/mine/accumulatePoints'
 							},
 							{
 								title: '我的学习',
-								url: '/mine'
+								url: '/mine/mineStudy'
 							},
 							{
 								title: '就业状态确认',
-								url: '/javascript:;'
+								url: '/mine/javascript:;'
 							},
 							{
 								title: '零就业家庭申请',
-								url: '/javascript:;'
+								url: '/mine/javascript:;'
 							}
 						]
 					}
@@ -157,34 +170,31 @@
 				this.loginSuccess = true;
 			}
 			// 通过bus获取登录状态
-			this.$root.$on('sendLoginState', value => {
+			bus.$on('sendLoginState', value => {
 				this.loginSuccess = value;
 			});
-			// 判断是否存在导航选中状态，如果不存在，选中首页相关栏目
-			// this.subMenuCurrent = (this.$route.path != '/') ? this.$route.path : '/college';
-			this.menuCurrent = sessionStorage.getItem('menuCurrent') ? sessionStorage.getItem('menuCurrent') : '/training';
-			this.subMenuCurrent = sessionStorage.getItem('subMenuCurrent') ? sessionStorage.getItem('subMenuCurrent') : '/college';
 		},
-		watch: {
-			// $route(to, from) {
-			// 	// console.log(window.location.href);
-			// 	// console.log(this.$route.path);
-			// 	// console.log(this.$route.params);
-			// 	console.log(to, from);
-			// 	this.subMenuCurrent = (this.$route.path != '/') ? this.$route.path : '/college';
-			// }
+		mounted() {
+			// 页面直达模拟点击选中导航：如分享的地址、浏览器地址栏直接输入、外链输入等……
+			let refName = window.location.pathname;
+			// console.log(refName);
+			// console.log(this.$refs);
+			let _ref = this.$refs[refName];
+			if(_ref) _ref[0].click();
 		},
+		// watch: {
+		// 	'$route': function(newVal) {
+		// 		console.log(newVal);
+		// 		let menus = newVal.path.split('/');
+		// 		let menu = menus[1];
+		// 		console.log(menu);
+		// 		this.menuCurrent = `/${menu}`;
+		// 	}
+		// },
 		methods: {
-			// 存储选中栏目
+			// 选中一级导航
 			saveMenu(menu) {
-				sessionStorage.setItem('menuCurrent', menu);
 				this.menuCurrent = menu;
-			},
-			saveSubMenu(menu, subMenu) {
-				sessionStorage.setItem('menuCurrent', menu);
-				sessionStorage.setItem('subMenuCurrent', subMenu);
-				this.menuCurrent = menu;
-				this.subMenuCurrent = subMenu;
 			},
 			logout() {
 				this.$api.login.logout({})
@@ -192,10 +202,12 @@
 						console.log(res);
 						// 登出成功，清除token
 						localStorage.removeItem('token');
-						sessionStorage.setItem('url', '/mine');
+						localStorage.removeItem('saveTime');
+						localStorage.removeItem('loginName');
+						localStorage.removeItem('loginPassword');
+						sessionStorage.setItem('url', '/mine/mineStudy');
 						this.loginSuccess = false;
 						// 跳转到登录页
-						console.log(this.$router);
 						this.$router.push({
 							name: 'login',
 						});
@@ -203,7 +215,7 @@
 					.catch(err => {
 						console.log(err);
 					});
-			},
+			}
 		}
 	};
 </script>
@@ -290,21 +302,23 @@
 		height: 45px;
 
 		&-list {
-			li.actived {
+			.router-link-exact-active {
 				background: #0090f5;
 			}
-
+			
 			li {
 				float: left;
 				width: 20%;
 				text-align: center;
 
-				a {
+				a,
+				.a {
 					color: #fff;
 					line-height: 45px;
 					display: inline-block;
 					width: 100%;
 					height: 100%;
+					cursor: pointer;
 
 					&:hover {
 						background: #0090f5;
@@ -315,7 +329,7 @@
 						content: '';
 						width: 17px;
 						height: 20px;
-						background: url(../../assets/icon/applyinfo.png) no-repeat 0 0;
+						background: url(~@a/icon/applyinfo.png) no-repeat 0 0;
 						background-size: 100%;
 						margin-right: 5px;
 						margin-top: -2px;
@@ -324,13 +338,13 @@
 					&.home:before {
 						width: 20px;
 						height: 16px;
-						background-image: url(../../assets/icon/home.png);
+						background-image: url(~@a/icon/home.png);
 						margin-top: -5px;
 					}
-					&.interspace:before {
+					&.mine:before {
 						width: 20px;
 						height: 20px;
-						background-image: url(../../assets/icon/user.png);
+						background-image: url(~@a/icon/user.png);
 					}
 				}
 			}

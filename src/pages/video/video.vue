@@ -60,15 +60,13 @@ export default {
       videoSrc: "",
       activeNum: 0,
       baseurl: "http:///file.dev.exstudy.com/",
-      videourl:""
+      videourl: ""
     };
   },
-  created() {
-    this.getVodDetail();
+  created() {},
+  updated() {
+    document.title = `${this.videoDetail.vodName} - 视频播放 - 教育培训`;
   },
-	updated() {
-		document.title = `${this.videoDetail.vodName} - 视频播放 - 教育培训`
-	},
   methods: {
     playVideo(e) {
       this.activeNum = e.currentTarget.dataset.id;
@@ -81,15 +79,18 @@ export default {
           id: id
         })
         .then(res => {
-          console.log(res)
           this.videoDetail = res.data.data;
           this.videoList = res.data.data.vodVideoList;
-          this.videourl=this.baseurl+this.videoList[0].filePath;
+          this.videourl = this.baseurl + this.videoList[0].filePath;
+          console.log(res)
         })
         .catch(err => {
           console.log(err);
         });
     }
+  },
+  mounted() {
+    this.getVodDetail();
   }
 };
 </script>

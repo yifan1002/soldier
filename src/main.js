@@ -29,7 +29,4 @@ new Vue({
   router,
   store,
   render: h => h(App),
-	data: {
-		Bus: new Vue() // 用于非父子组件通信
-	}
 }).$mount('#app')

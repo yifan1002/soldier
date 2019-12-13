@@ -53,8 +53,8 @@ const routes = [
 		},
 		children: [
 			{
-				name: 'mine',
-				path: '/mine',
+				name: 'mineStudy',
+				path: 'mineStudy',
 				component: r => require.ensure([], () => r(require('@c/mineStudy/mineStudy')), 'mineStudy'),
 				meta: {
 					needLogin: true,
@@ -62,8 +62,8 @@ const routes = [
 				}
 			},
 			{
-				path: '/mineStudy',
-				name: 'mainStudy',
+				path: 'mineHistory',
+				name: 'mainHistory',
 				component: r => require.ensure([], () => r(require('@c/classHistory/classHistory')), 'classHistory'),
 				meta: {
 					needLogin: true,
@@ -72,7 +72,7 @@ const routes = [
 			},
 			{
 				name: 'collection',
-				path: '/collection',
+				path: 'collection',
 				component: r => require.ensure([], () => r(require('@c/collection/collection')), 'collection'),
 				meta: {
 					needLogin: true,
@@ -81,7 +81,7 @@ const routes = [
 			},
 			{
 				name: 'accumulatePoints',
-				path: '/accumulatePoints',
+				path: 'accumulatePoints',
 				component: r => require.ensure([], () => r(require('@c/accumulate/accumulate')), 'accumulate'),
 				meta: {
 					needLogin: true,

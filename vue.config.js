@@ -6,7 +6,7 @@ function resolve(dir) {
 
 module.exports = {
 	// 目录相关
-	publicPath: process.env.NODE_ENV === 'production' ? './' : '',
+	publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
 	productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
 	outputDir: process.env.outputDir,
 

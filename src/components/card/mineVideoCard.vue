@@ -9,7 +9,7 @@
     </div>
     <div class="mine-video-title">
       <router-link ref="videodetail"
-        :to="{path:'video?id='+vodList.vodId}"
+        :to="{path:'/video?id='+vodList.vodId}"
         target="_blank"
         v-text="vodList.vodName?vodList.vodName:'已删除'"
       >{{vodList.vodName}}</router-link>

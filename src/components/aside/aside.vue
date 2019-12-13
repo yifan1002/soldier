@@ -3,8 +3,7 @@
     <ul @click="changeValue">
       <li v-for="(item,index) in listItem" :key="index">
         <router-link
-          :to="item.path"
-          :class="pagetype==item.path?'actived':true"
+          :to="item.path"        
           href="javascript:;"
           :data-i="item.path"
         >{{item.title}}</router-link>
@@ -19,8 +18,8 @@ export default {
   data() {
     return {
       listItem: [
-        { title: "我的学习", path: "mine" },
-        { title: "学习记录", path: "mineStudy" },
+        { title: "我的学习", path: "mineStudy" },
+        { title: "学习记录", path: "mineHistory" },
         { title: "我的收藏", path: "collection" },
         { title: "积分明细", path: "accumulatePoints" }
       ],
@@ -36,13 +35,8 @@ export default {
     ...mapMutations(["changeMenu", "changeSubMenu"])
   },
   created() {
-    this.pagetype = this.$route.path.slice(1);
+    this.pagetype = this.$route.path.slice(6);
     this.changeMenu("interspace");
-  },
-  watch: {
-    "$route.path": function(newVal) {
-        this.pagetype=newVal.slice(1)
-    }
   }
 };
 </script>
@@ -70,7 +64,7 @@ export default {
       &:hover {
         color: $c-primary;
       }
-      &.actived {
+      &.router-link-active {
         color: $c-primary;
         border-left: 4px solid $c-primary;
       }
