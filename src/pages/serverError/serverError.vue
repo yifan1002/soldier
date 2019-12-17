@@ -20,8 +20,7 @@
 		},
 		methods: {
 			reLoad() {
-				let url = sessionStorage.getItem('url');
-				if (!url) url = '/';
+				let url = sessionStorage.getItem('url') ? sessionStorage.getItem('url') : '/';
 				this.$router.push({
 					path: url
 				});
