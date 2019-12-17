@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import { encrypt } from '@u/encrypt';
 
 const routes = [
 	// 重定向到主页
@@ -30,8 +31,8 @@ const routes = [
 		},
 		// 路由守卫,进入登录页清除token
 		beforeEnter: (to, from, next) => {
-			localStorage.removeItem('token');
-			localStorage.removeItem('loginTime');
+			localStorage.removeItem(encrypt('loginTime'));
+			localStorage.removeItem(encrypt('token'));
 			next();
 		}
 	},
