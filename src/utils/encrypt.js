@@ -2,7 +2,7 @@ import CryptoJS from 'crypto-js';
 
 const enCode = ['F*', 'g_', '@K', '+=']; // 秘钥拼接字符
 
-// 根据时间戳动态加解
+// 根据时间戳动态加解密
 let desKey = time => {
 	let timeTen = Math.round(time / 1000).toString();
 	return enCode[0] + timeTen.substring(0, 5) + enCode[1] + timeTen.substring(5) + enCode[2];
