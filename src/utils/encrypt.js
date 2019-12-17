@@ -1,3 +1,9 @@
+/** 
+ *  DES/AES对称加解密
+ *  秘钥应该是8、16或32位
+ *  简版加密秘钥固定不变,主要用于加密本地存储的关键字key加密
+ */
+
 import CryptoJS from 'crypto-js';
 
 const enCode = ['F*', 'g_', '@K', '+=']; // 秘钥拼接字符
@@ -12,7 +18,7 @@ const simpleKey = enCode.join().replace(/,/g, '');
 
 // 加密
 let encrypt = (word, key = simpleKey) => {
-	let ckey = CryptoJS.enc.Utf8.parse(key); // 十六位十六进制数作为密钥
+	let ckey = CryptoJS.enc.Utf8.parse(key);
 	let encrypted = CryptoJS.DES.encrypt(word, ckey, {
 		mode: CryptoJS.mode.ECB,
 		padding: CryptoJS.pad.Pkcs7
@@ -22,7 +28,7 @@ let encrypt = (word, key = simpleKey) => {
 
 // 解密
 let decrypt = (word, key = simpleKey) => {
-	let ckey = CryptoJS.enc.Utf8.parse(key); // 十六位十六进制数作为密钥
+	let ckey = CryptoJS.enc.Utf8.parse(key);
 	let decrypt = CryptoJS.DES.decrypt(word, ckey, {
 		mode: CryptoJS.mode.ECB,
 		padding: CryptoJS.pad.Pkcs7
@@ -30,7 +36,6 @@ let decrypt = (word, key = simpleKey) => {
 	let decryptedStr = decrypt.toString(CryptoJS.enc.Utf8);
 	return decryptedStr.toString()
 }
-
 
 export {
 	desKey,
