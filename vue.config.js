@@ -1,4 +1,5 @@
 const path = require('path');
+const UglifyPlugin = require('uglifyjs-webpack-plugin');
 
 function resolve(dir) {
 	return path.join(__dirname, dir)
@@ -6,7 +7,8 @@ function resolve(dir) {
 
 module.exports = {
 	// 目录相关
-	publicPath: process.env.NODE_ENV === 'production' ? './' : '/',
+	// publicPath: process.env.NODE_ENV === 'production' ? './' : '',
+	publicPath: '/', // history路由嵌套模式
 	productionSourceMap: process.env.NODE_ENV === 'production' ? false : true,
 	outputDir: process.env.outputDir,
 
@@ -41,6 +43,34 @@ module.exports = {
 				prependData: `@import "@a/scss/var.scss";`
 			}
 		}
+	},
+
+	// 生产环境压缩混淆代码
+	configureWebpack: (config) => {
+		if (process.env.VUE_APP_CURRENTMODE == 'pro') {
+			// 为生产环境修改配置
+			config.mode = 'production'
+			// 将每个依赖包打包成单独的js文件
+			let optimization = {
+				minimizer: [new UglifyPlugin({
+					uglifyOptions: {
+						warnings: false,
+						compress: {
+							drop_console: true,
+							drop_debugger: false,
+							pure_funcs: ['console.log']
+						}
+					}
+				})]
+			}
+			Object.assign(config, {
+				optimization
+			})
+		} else {
+			// 为开发环境修改配置
+			config.mode = 'development'
+		}
 	}
+	
 	
 }

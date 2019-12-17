@@ -59,11 +59,12 @@ export default {
       videoList: [],
       videoSrc: "",
       activeNum: 0,
-      baseurl: "http:///file.dev.exstudy.com/",
+      baseurl: "http://file.dev.exstudy.com/",
       videourl: ""
     };
   },
-  created() {},
+  created() {
+  },
   updated() {
     document.title = `${this.videoDetail.vodName} - 视频播放 - 教育培训`;
   },
@@ -82,7 +83,6 @@ export default {
           this.videoDetail = res.data.data;
           this.videoList = res.data.data.vodVideoList;
           this.videourl = this.baseurl + this.videoList[0].filePath;
-          console.log(res)
         })
         .catch(err => {
           console.log(err);

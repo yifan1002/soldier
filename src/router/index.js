@@ -16,7 +16,10 @@ const routes = [
 	},
 	{
 		path: '/video',
-		component: r => require.ensure([], () => r(require('@p/video/video')), 'video')
+		component: r => require.ensure([], () => r(require('@p/video/video')), 'video'),
+		meta: {
+			needLogin:true
+		},
 	},
 	{
 		name: 'login',
@@ -28,6 +31,7 @@ const routes = [
 		// 路由守卫,进入登录页清除token
 		beforeEnter: (to, from, next) => {
 			localStorage.removeItem('token');
+			localStorage.removeItem('loginTime');
 			next();
 		}
 	},

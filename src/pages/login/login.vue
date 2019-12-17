@@ -19,6 +19,7 @@
 
 <script>
 	import bus from '@u/bus';
+	import { desKey, encrypt } from '@u/encrypt';
 	export default {
 		name: 'login',
 		data() {
@@ -37,24 +38,24 @@
 					})
 					.then(res => {
 						// console.log(res);
-						// 登录成功，存储token
-						// console.log(res.data.data.token)
-						const token = `Bearer ${res.data.data.token}`;
-						localStorage.setItem('token', token);
+						// 登录成功，存储token和时间戳，用于aes加密秘钥和保存密码过期使用
+						let token = `Bearer ${res.data.data.token}`;
+						let loginTime = new Date().getTime();
+						localStorage.setItem(encrypt('loginTime'), loginTime);
+						localStorage.setItem(encrypt('token'), token);
 						// 登录成功，将登录状态传递给header组件
 						bus.$emit('sendLoginState', true);
 						
 						// 登录成功，如果勾选了记住用户信息，需要保存用户名和密码，token过期后，要自动登录
 						if (this.remember === true) {
-							let saveTime = new Date();
-							saveTime = saveTime.setDate(saveTime.getDate() + 10);
-							localStorage.setItem('saveTime', saveTime);
-							localStorage.setItem('loginName', this.loginName);
-							localStorage.setItem('loginPassword', this.$md5(this.loginPassword));
+							let saveTime = new Date().setDate(new Date().getDate() + 10);
+							localStorage.setItem(encrypt('saveTime'), saveTime);
+							localStorage.setItem(encrypt('loginName'), encrypt(this.loginName, desKey(loginTime)));
+							localStorage.setItem(encrypt('loginPassword'), this.$md5(this.loginPassword));
 						} else{
-							localStorage.removeItem('saveTime');
-							localStorage.removeItem('loginName');
-							localStorage.removeItem('loginPassword');
+							localStorage.removeItem(encrypt('saveTime'));
+							localStorage.removeItem(encrypt('loginName'));
+							localStorage.removeItem(encrypt('loginPassword'));
 						}
 						
 						// 登录成功，跳转到内部页面

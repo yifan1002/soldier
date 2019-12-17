@@ -39,35 +39,21 @@
 		</div>
 		<div class="outer-box header-nav">
 			<div class="inner-box">
-				<ul class="header-nav-list">
+				<ul class="header-nav-list" id="aaa">
 					<li v-for="(item, index) in menus" :key="index" :class="{'router-link-exact-active': menuCurrent === item.url}">
 						<div v-if="item.subMenus">
-							<span v-if="item.url === '/home'" class="a home" :to="item.url">
-								{{ item.title }}
-							</span>
-							<span v-else-if="item.url === '/mine'" class="a mine" :to="item.url">
-								{{ item.title }}
-							</span>
-							<span v-else :to="item.url" class="a">
-								{{ item.title }}
-							</span>
+							<span v-if="item.url === '/home'" class="a home" :to="item.url">{{ item.title }}</span>
+							<span v-else-if="item.url === '/mine'" class="a mine" :to="item.url">{{ item.title }}</span>
+							<span v-else :to="item.url" class="a">{{ item.title }}</span>
 						</div>
 						<div v-else>
-							<router-link v-if="item.url === '/home'" class="home" :to="item.url">
-								{{ item.title }}
-							</router-link>
-							<router-link v-else-if="item.url === '/mine'" class="mine" :to="item.url">
-								{{ item.title }}
-							</router-link>
-							<router-link v-else :to="item.url">
-								{{ item.title }}
-							</router-link>
+							<router-link v-if="item.url === '/home'" class="home" :to="item.url">{{ item.title }}</router-link>
+							<router-link v-else-if="item.url === '/mine'" class="mine" :to="item.url">{{ item.title }}</router-link>
+							<router-link v-else :to="item.url">{{ item.title }}</router-link>
 						</div>
 						<ul v-if="item.subMenus" class="header-nav-sub">
 							<li v-for="(subItem, subIndex) in item.subMenus" :key="subIndex" :ref="subItem.url" @click.stop="saveMenu(item.url)">
-								<router-link :to="subItem.url">
-									{{ subItem.title }}
-								</router-link>
+								<router-link :to="subItem.url">{{ subItem.title }}</router-link>
 							</li>
 						</ul>
 					</li>
@@ -78,87 +64,84 @@
 </template>
 
 <script>
-	import bus from '@u/bus';
+	import bus from "@u/bus";
+	import { encrypt } from '@u/encrypt';
 	export default {
 		name: "Header",
 		data() {
 			return {
-				menuCurrent: '/training',
+				menuCurrent: "/training",
 				loginSuccess: false,
 				inputValue: "",
 				select: "",
-				menus: [
-					{
-						title: '首页',
-						url: '/home'
+				menus: [{
+						title: "首页",
+						url: "/home"
 					},
 					{
-						title: '政策资讯',
-						url: '/javascript:;'
+						title: "政策资讯",
+						url: "/javascript:;"
 					},
 					{
-						title: '招聘平台',
-						url: '/recruitment',
-						subMenus: [
-							{
-								title: '我的简历',
-								url: '/resume'
+						title: "招聘平台",
+						url: "/recruitment",
+						subMenus: [{
+								title: "我的简历",
+								url: "/resume"
 							},
 							{
-								title: '职位查询',
-								url: '/javascript:;'
+								title: "职位查询",
+								url: "/javascript:;"
 							},
 							{
-								title: '应聘进度',
-								url: '/javascript:;'
+								title: "应聘进度",
+								url: "/javascript:;"
 							},
 							{
-								title: '招聘会',
-								url: '/javascript:;'
+								title: "招聘会",
+								url: "/javascript:;"
 							}
 						]
 					},
 					{
-						title: '教育培训',
-						url: '/training',
-						subMenus: [
-							{
-								title: '学历教育',
-								url: '/javascript:;'
+						title: "教育培训",
+						url: "/training",
+						subMenus: [{
+								title: "学历教育",
+								url: "/javascript:;"
 							},
 							{
-								title: '培训',
-								url: '/javascript:;'
+								title: "培训",
+								url: "/javascript:;"
 							},
 							{
-								title: '网络学院',
-								url: '/college'
+								title: "网络学院",
+								url: "/college"
 							}
 						]
 					},
 					{
-						title: '我的空间',
-						url: '/mine',
-						subMenus: [
-							{
-								title: '个人信息',
-								url: '/mine/userInfo'
+						title: "我的空间",
+						url: "/mine",
+						subMenus: [{
+								title: "个人信息",
+								url: "/mine/userInfo"
 							},
 							{
-								title: '我的积分',
-								url: '/mine/accumulatePoints'
+								title: "我的积分",
+								url: "/mine/accumulatePoints"
 							},
 							{
-								title: '我的学习',
-								url: '/mine/mineStudy'
+								title: "我的学习",
+								url: "/mine/mineStudy"
 							},
 							{
-								title: '就业状态确认',
-								url: '/mine/javascript:;'
+								title: "就业状态确认",
+								url: "/mine/javascript:;"
 							},
 							{
-								title: '零就业家庭申请',
-								url: '/mine/javascript:;'
+								title: "零就业家庭申请",
+								url: "/mine/javascript:;"
 							}
 						]
 					}
@@ -166,13 +149,24 @@
 			};
 		},
 		created() {
-			if (localStorage.getItem('token')) {
+			if (localStorage.getItem(encrypt('token'))) {
 				this.loginSuccess = true;
 			}
 			// 通过bus获取登录状态
-			bus.$on('sendLoginState', value => {
+			bus.$on("sendLoginState", value => {
 				this.loginSuccess = value;
 			});
+			// window.addEventListener("visibilitychange", () => {
+			// 	if (document.hidden) {
+			// 		console.log("隐藏");
+			// 	} else {
+			// 		if (localStorage.getItem('token')) {
+			// 			this.loginSuccess = true
+			// 		} else {
+			// 			this.loginSuccess = false
+			// 		}
+			// 	}
+			// });
 		},
 		mounted() {
 			// 页面直达模拟点击选中导航：如分享的地址、浏览器地址栏直接输入、外链输入等……
@@ -180,7 +174,7 @@
 			// console.log(refName);
 			// console.log(this.$refs);
 			let _ref = this.$refs[refName];
-			if(_ref) _ref[0].click();
+			if (_ref) _ref[0].click();
 		},
 		// watch: {
 		// 	'$route': function(newVal) {
@@ -197,19 +191,21 @@
 				this.menuCurrent = menu;
 			},
 			logout() {
-				this.$api.login.logout({})
+				this.$api.login
+					.logout({})
 					.then(res => {
 						console.log(res);
 						// 登出成功，清除token
-						localStorage.removeItem('token');
-						localStorage.removeItem('saveTime');
-						localStorage.removeItem('loginName');
-						localStorage.removeItem('loginPassword');
-						sessionStorage.setItem('url', '/mine/mineStudy');
+						localStorage.removeItem(encrypt('loginTime'));
+						localStorage.removeItem(encrypt('token'));
+						localStorage.removeItem(encrypt('saveTime'));
+						localStorage.removeItem(encrypt('loginName'));
+						localStorage.removeItem(encrypt('loginPassword'));
+						sessionStorage.setItem("url", "/mine/mineStudy");
 						this.loginSuccess = false;
 						// 跳转到登录页
 						this.$router.push({
-							name: 'login',
+							name: "login"
 						});
 					})
 					.catch(err => {
@@ -305,7 +301,7 @@
 			.router-link-exact-active {
 				background: #0090f5;
 			}
-			
+
 			li {
 				float: left;
 				width: 20%;
@@ -323,10 +319,10 @@
 					&:hover {
 						background: #0090f5;
 					}
-					
+
 					&:before {
 						display: inline-block;
-						content: '';
+						content: "";
 						width: 17px;
 						height: 20px;
 						background: url(~@a/icon/applyinfo.png) no-repeat 0 0;
@@ -335,12 +331,14 @@
 						margin-top: -2px;
 						vertical-align: middle;
 					}
+
 					&.home:before {
 						width: 20px;
 						height: 16px;
 						background-image: url(~@a/icon/home.png);
 						margin-top: -5px;
 					}
+
 					&.mine:before {
 						width: 20px;
 						height: 20px;
@@ -363,7 +361,7 @@
 			height: 45px;
 			background: #0044c2;
 			border-top: 1px solid #699eff;
-			
+
 			a:before {
 				display: none;
 			}

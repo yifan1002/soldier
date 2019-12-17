@@ -9,6 +9,7 @@ import bus from '@u/bus';
 import base from './base';
 import qs from 'qs';
 import { Message } from 'element-ui';
+import { desKey, encrypt, decrypt } from '@u/encrypt';
 
 // 为了实现Class的私有属性
 const showMessage = Symbol('showMessage');
@@ -65,10 +66,10 @@ router.beforeEach((to, from, next) => {
 	}
 	// 判断跳转的路由是否需要登录
 	if (to.meta.needLogin) {
-		if (localStorage.getItem('token')) {
+		if (localStorage.getItem(encrypt('token'))) {
 			next(); //直接进入对应的路由
 		} else {
-			sessionStorage.setItem('url', to.path)
+			sessionStorage.setItem('url', to.fullPath)
 			tip('用户未授权或授权过期，请重新登录');
 			next('/login'); //当前路由被终止，进入login路由导航
 		}
@@ -88,8 +89,9 @@ const toLogin = () => {
 			name: 'login'
 		});
 		sessionStorage.setItem('url', url);
-		localStorage.removeItem('token');
 	}
+	localStorage.removeItem(encrypt('loginTime'));
+	localStorage.removeItem(encrypt('token'));
 }
 
 /** 
@@ -124,12 +126,12 @@ const errorHandle = (status, other) => {
 		// 清除token并跳转到登录页
 		case 5001: {
 			let nowTime = new Date().getTime();
-			let saveTime = localStorage.getItem('saveTime');
-			let loginName = localStorage.getItem('loginName');
-			let loginPassword = localStorage.getItem('loginPassword');
+			let saveTime = localStorage.getItem(encrypt('saveTime'));
+			let loginTime = localStorage.getItem(encrypt('loginTime'));
+			let loginName = decrypt(localStorage.getItem(encrypt('loginName')), desKey(loginTime));
+			let loginPassword = decrypt(localStorage.getItem(encrypt('loginPassword')), desKey(loginTime));
 			// 如果存有用户名和密码，并且没有过期，自动登录
 			if (loginName && loginPassword && nowTime <= saveTime) {
-				console.log(1221);
 				axios.post(`${base.url}/login`, qs.stringify({
 					loginName,
 					loginPassword
@@ -139,7 +141,9 @@ const errorHandle = (status, other) => {
 					// 登录成功，存储token
 					// console.log(res.data.data.token)
 					const token = `Bearer ${res.data.data.token}`;
-					localStorage.setItem('token', token);
+					let loginTime = new Date().getTime();
+					localStorage.setItem(encrypt('loginTime'), loginTime);
+					localStorage.setItem(encrypt('token'), encrypt(token, desKey(loginTime)));
 					// 登录成功，将登录状态传递给header组件
 					bus.$emit('sendLoginState', true);
 					// 登录成功，跳转到内部页面
@@ -154,7 +158,6 @@ const errorHandle = (status, other) => {
 				});
 			} else{
 				tip('用户未授权或授权过期，请重新登录!');
-				localStorage.removeItem('token');
 				setTimeout(() => {
 					toLogin();
 				}, 1000);
@@ -207,8 +210,9 @@ instance.interceptors.request.use(
 		// 但是即使token存在，也有可能token是过期的，所以在每次的请求头中携带token        
 		// 后台根据携带的token判断用户的登录情况，并返回给我们对应的状态码        
 		// 而后我们可以在响应拦截器中，根据状态码进行一些统一的操作。        
-		let token = localStorage.getItem('token');
-		token && (config.headers.Authorization = token);
+		let token = localStorage.getItem(encrypt('token'));
+		let loginTime = localStorage.getItem(encrypt('loginTime'));
+		token && loginTime && (config.headers.Authorization = token);
 		return config;
 	},
 	error => Promise.error(error)
@@ -222,9 +226,10 @@ instance.interceptors.response.use(
 			// console.log('1-请求成功');
 			// 如果有返回新token，更新localStorage的token
 			if (res.headers.token) {
-				const token = `Bearer ${res.headers.token}`;
-				// console.log(token);
-				localStorage.setItem('token', token);
+				let token = `Bearer ${res.data.data.token}`;
+				let loginTime = new Date().getTime();
+				localStorage.setItem(encrypt('loginTime'), loginTime);
+				localStorage.setItem(encrypt('token'), token);
 			}
 			return Promise.resolve(res);
 		} else {
