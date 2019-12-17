@@ -21,6 +21,7 @@
 		methods: {
 			reLoad() {
 				let url = sessionStorage.getItem('url');
+				if (!url) url = '/';
 				this.$router.push({
 					path: url
 				});
