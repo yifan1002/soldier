@@ -7,7 +7,24 @@ const videoclass = {
 	
 	vodDetail(params) {
 		return axios.get(`${base.url}/vod/vodDetail`, {params});
-	}
+	},
+	vodComment(data) {
+		return axios.post(`${base.url}/vod/comment`, data);
+	},
+	// vodComment(data) {
+	// 	return axios({
+	// 		headers: {
+	// 			'Content-Type': 'application/json'
+	// 		},
+	// 		transformRequest: [function(data) {
+	// 			data = JSON.stringify(data);
+	// 			return data
+	// 		}],
+	// 		url: `${base.url}/vod/comment`,
+	// 		method: 'post',
+	// 		data
+	// 	});
+	// },
 	// 其他接口…………
 }
 

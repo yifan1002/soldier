@@ -64,6 +64,18 @@ export default {
     };
   },
   created() {
+		this.$api.videoclass
+			.vodComment({
+				id: 248,
+				objectId: 0,
+				starNum: "FIVE_STAR"
+			})
+			.then(res => {
+				console.log(res);
+			})
+			.catch(err => {
+				console.log(err);
+			});
   },
   updated() {
     document.title = `${this.videoDetail.vodName} - 视频播放 - 教育培训`;

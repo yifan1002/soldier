@@ -37,7 +37,7 @@
 						loginPassword: this.$md5(this.loginPassword)
 					})
 					.then(res => {
-						// console.log(res);
+						console.log(res);
 						// 登录成功，存储token和时间戳，用于aes加密秘钥和保存密码过期使用
 						let token = `Bearer ${res.data.data.token}`;
 						let loginTime = new Date().getTime();
